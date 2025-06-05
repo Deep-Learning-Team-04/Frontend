@@ -12,5 +12,13 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
+// admin
+Route::get('/inputartis', function () {
+    return view('admin.inputartis');
+})->name('admin.inputartis');
+
+Route::get('/inputlagu', function () {
+    return view('admin.inputlagu');
+})->name('admin.inputlagu');
 
 require __DIR__.'/auth.php';
