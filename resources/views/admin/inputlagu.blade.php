@@ -10,29 +10,38 @@
     <div class="w-full max-w-7xl px-6 mx-auto">
         <!-- Konten Halaman Home -->
         <div class="p-4 bg-[#F1F8FC] rounded-lg shadow-md border-t-8 border-[#7B9CD9]">
+            
+            <!-- Form -->
+            <form action="#" method="POST" enctype="multipart/form-data">
+                @csrf
 
-            <!-- Konten -->
-            <div class="mt-8">
-                <label for="audio" class="block text-md font-medium text-neutral mb-2">
-                    File Audio
-                </label>
-                <input type="file" id="audio" name="audio" class="block w-full text-sm shadow-sm" />
-            </div>
+                <!-- File Audio -->
+                <div class="mt-8">
+                    <label for="audio" class="block text-md font-medium text-neutral mb-2">
+                        File Audio
+                    </label>
+                    <input type="file" id="audio" name="audio" class="block w-full text-sm shadow-sm" required />
+                </div>
 
-            <div class="mt-4">
-                <label for="genre" class="inline-block font-inter text-md font-medium text-neutral">
-                    Genre
-                </label>
-                <x-text-input id="genre" class="block  w-full pr-12" type="text" name="genre"
-                    placeholder="Tambahkan genre lagu" required />
-            </div>
-            <div class="mt-4">
-                <label for="nama_lagu" class="inline-block font-inter text-md font-medium text-neutral">
-                    Nama lagu
-                </label>
-                <x-text-input id="nama_lagu" class="block  w-full pr-12" type="text" name="nama_lagu"
-                    placeholder="Tambahkan nama lagu" required />
-            </div>
+                <!-- Genre -->
+                <div class="mt-4">
+                    <label for="genre" class="inline-block font-inter text-md font-medium text-neutral">
+                        Genre
+                    </label>
+                    <x-text-input id="genre" class="block w-full pr-12" type="text" name="genre"
+                        placeholder="Tambahkan genre lagu" required />
+                </div>
+
+                <!-- Nama Lagu -->
+                <div class="mt-4">
+                    <label for="nama_lagu" class="inline-block font-inter text-md font-medium text-neutral">
+                        Nama Lagu
+                    </label>
+                    <x-text-input id="nama_lagu" class="block w-full pr-12" type="text" name="nama_lagu"
+                        placeholder="Tambahkan nama lagu" required />
+                </div>
+
+                <!-- Artis -->
                 <div class="mt-4">
                     <label for="artis" class="inline-block font-inter text-md font-medium text-neutral mb-2">
                         Artis
@@ -48,15 +57,15 @@
                     </select>
                 </div>
 
-            <!-- Tombol Kirim -->
-            <div class="flex justify-center mt-8 pb-20">
-                <x-primary-button type="submit"
-                    class="flex items-center justify-center gap-2 w-[240px] h-[40px] text-md py-2 mt-10">
-                    <img src="img/save.png" alt="Icon" style="max-width: 24px; max-height: 24px;" />
-                    {{ __('Kirim') }}
-                </x-primary-button>
-            </div>
+                <!-- Tombol Kirim -->
+                <div class="flex justify-center mt-8 pb-20">
+                    <x-primary-button type="submit"
+                        class="flex items-center justify-center gap-2 w-[240px] h-[40px] text-md py-2 mt-10">
+                        <img src="img/save.png" alt="Icon" style="max-width: 24px; max-height: 24px;" />
+                        {{ __('Kirim') }}
+                    </x-primary-button>
+                </div>
+            </form>
         </div>
     </div>
 </x-app-layout>
-
