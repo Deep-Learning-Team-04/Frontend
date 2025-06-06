@@ -21,4 +21,8 @@ Route::get('/inputlagu', function () {
     return view('admin.inputlagu');
 })->name('admin.inputlagu');
 
+Route::get('/profile', function () {
+    return view('user.profile');
+})->name('user.profile');
+
 require __DIR__.'/auth.php';
