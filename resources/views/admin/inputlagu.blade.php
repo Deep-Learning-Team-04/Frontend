@@ -29,7 +29,7 @@
                         Genre
                     </label>
                     <x-text-input id="genre" class="block w-full pr-12" type="text" name="genre"
-                        placeholder="Tambahkan genre lagu" required />
+                        placeholder="Tambahkan genre lagu" :disabled="false" required />
                 </div>
 
                 <!-- Nama Lagu -->
@@ -38,7 +38,7 @@
                         Nama Lagu
                     </label>
                     <x-text-input id="nama_lagu" class="block w-full pr-12" type="text" name="nama_lagu"
-                        placeholder="Tambahkan nama lagu" required />
+                        placeholder="Tambahkan nama lagu" :disabled="false" required />
                 </div>
 
                 <!-- Artis -->

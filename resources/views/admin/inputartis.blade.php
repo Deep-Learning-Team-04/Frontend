@@ -28,7 +28,7 @@
                     <label for="artis" class="inline-block font-inter text-md font-medium text-neutral">
                         Nama Artis
                     </label>
-                    <x-text-input id="artis" class="block w-full pr-12" type="text" name="artis" placeholder="Tambahkan nama artis" required />
+                    <x-text-input id="artis" class="block w-full pr-12" type="text" name="artis" placeholder="Tambahkan nama artis" :disabled="false" required />
                 </div>
 
                 <!-- Tombol Kirim -->
