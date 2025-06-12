@@ -89,7 +89,7 @@
                     </p>
                 </div>
                 <div class="text-center">
-                    <img src="img/user.png" class="mb-2 mx-auto" alt="ikon" />
+                    <img src="img/user_landing.png" class="mb-2 mx-auto" alt="ikon" />
                     <h3 class="font-inter text-xl text-[#7B9CD9] font-bold mb-5 select-none">
                         Personalisasi Musik
                     </h3>

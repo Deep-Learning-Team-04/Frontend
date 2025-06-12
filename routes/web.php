@@ -21,8 +21,30 @@ Route::get('/inputlagu', function () {
     return view('admin.inputlagu');
 })->name('admin.inputlagu');
 
+
+//user
+Route::get('/home', function () {
+    return view('user.home');
+})->name('user.home');
+
 Route::get('/profile', function () {
     return view('user.profile');
 })->name('user.profile');
+
+Route::get('/playlist', function () {
+    return view('user.playlist');
+})->name('user.playlist');
+
+Route::get('/favorite', function () {
+    return view('user.favorite');
+})->name('user.favorite');
+
+Route::get('/rekomendasiplaylist', function () {
+    return view('user.rekomendasiplaylist');
+})->name('user.rekomendasiplaylist');
+
+Route::get('/artis', function () {
+    return view('user.artis');
+})->name('user.artis');
 
 require __DIR__.'/auth.php';
