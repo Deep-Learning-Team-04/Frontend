@@ -47,7 +47,7 @@
                         Artis
                     </label>
                     <select id="artis" name="artis" required
-                        class="block w-full text-sm rounded-md shadow-sm border border-gray-300 text-gray-700 placeholder:text-gray-400 focus:outline-none focus:border-[#7B9CD9] focus:ring-1 focus:ring-[#7B9CD9]">
+                        class="block w-full text-md rounded-md shadow-sm border border-gray-300 text-neu900 placeholder:text-gray-400 focus:outline-none focus:border-[#7B9CD9] focus:ring-1 focus:ring-[#7B9CD9]">
                         <option value="" disabled selected>-- Pilih Artis --</option>
                         <option value="tulus">Tulus</option>
                         <option value="raisa">Raisa</option>
