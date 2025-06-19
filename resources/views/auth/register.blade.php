@@ -1,52 +1,61 @@
 <x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
-        @csrf
-
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+    <form method="GET" action="/register-success">
+        <div class="flex flex-col items-center justify-center pt-16 pb-0">
+            <h1 class="font-roboto text-4xl font-semibold text-[#232C43]">Registrasi</h1>
         </div>
 
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        {{-- Nama --}}
+        <div class="relative mt-4">
+            <x-text-input id="name" class="block mt-1 w-full pr-12"
+                          type="text" name="name" placeholder="Nama" required />
+
+            <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
+                <img src="{{ asset('img/user.png') }}" alt="Name Icon" class="w-6 h-6" />
+            </div>
         </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+        {{-- Email --}}
+        <div class="relative mt-4">
+            <x-text-input id="email" class="block mt-1 w-full pr-12"
+                          type="email" name="email" placeholder="Email" required />
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+            <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
+                <img src="{{ asset('img/gmail.png') }}" alt="Email Icon" class="w-6 h-6" />
+            </div>
         </div>
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+        {{-- Password --}}
+        <div class="relative mt-4">
+            <x-text-input id="password" class="block mt-1 w-full pr-12"
+                          type="password" name="password" placeholder="Kata sandi" required />
 
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+            <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
+                <img src="{{ asset('img/password.png') }}" alt="Password Icon" class="w-6 h-6" />
+            </div>
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
+        {{-- Konfirmasi --}}
+        <div class="relative mt-4">
+            <x-text-input id="password_confirmation" class="block mt-1 w-full pr-12"
+                          type="password" name="password_confirmation"
+                          placeholder="Konfirmasi kata sandi" required />
 
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
+            <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
+                <img src="{{ asset('img/password.png') }}" alt="Confirm Icon" class="w-6 h-6" />
+            </div>
+        </div>
+
+        {{-- Tombol daftar --}}
+        <div class="flex justify-center">
+            <x-primary-button class="w-full text-lg py-2 mt-10">
+                Registrasi
             </x-primary-button>
         </div>
+
+        {{-- Link ke login --}}
+        <p class="mt-2 text-center text-sm text-gray-600">
+            Sudah punya akun?
+            <a href="/login" class="text-primary hover:underline">Masuk sekarang</a>
+        </p>
     </form>
 </x-guest-layout>
