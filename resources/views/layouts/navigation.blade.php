@@ -22,7 +22,11 @@
         <!-- Dropdown Menu: Log Out -->
         <div x-show="open" x-transition @click.away="open = false"
             class="absolute right-0 mt-24 w-32 bg-white border-[#F83B3E] rounded-md shadow-lg py-1 z-50">
+<<<<<<< HEAD
             {{-- <form method="POST" action="{{ route('logout') }}"> --}}
+=======
+            <form method="POST" action="{{ route('logout') }}">
+>>>>>>> 42f124953f68747f285d1fc2c93f70db54c8000c
                 @csrf
                 <button type="submit"
                     class="flex items-center w-full text-left px-4 py-2 text-sm font-medium text-[#F83B3E] hover:bg-[#ffecec]">
