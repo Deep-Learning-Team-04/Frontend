@@ -345,7 +345,11 @@
                 open: false,
                 openCreateModal: false,
                 searchQuery: '',
+<<<<<<< HEAD
+                playlists: [], // data playlist
+=======
                 playlists: ['Calm', 'Focus'], // data playlist
+>>>>>>> 42f124953f68747f285d1fc2c93f70db54c8000c
                 selected: [],
                 toggleSelected(playlist) {
                     if (this.selected.includes(playlist)) {

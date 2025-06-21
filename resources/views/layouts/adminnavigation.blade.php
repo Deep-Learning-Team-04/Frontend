@@ -6,6 +6,19 @@
         <img src="{{ asset('img/logo.png') }}" alt="Logo" class="h-6 mr-2">
     </div>
 
+    {{-- home dan search --}}
+    <div class="flex items-center px-8">
+    <div class="bg-pink-100 rounded-full p-1 flex items-center justify-center">
+        <img src="{{ asset('favicon.ico') }}" alt="Home" class="w-5 h-5" />
+    </div>
+
+    <x-text-input
+    type="text"
+    placeholder="Cari judul lagu dan artis..."
+    class="ml-4 w-80 flex-shrink-0 bg-pink-100 text-gray-800 px-4 py-1 rounded-full border-none focus:outline-none"
+    />
+    </div>
+
     <!-- Avatar & Dropdown -->
     <div class="flex items-center space-x-2 text-white relative" x-data="{ open: false }">
         <span class="text-md font-medium">
@@ -22,11 +35,7 @@
         <!-- Dropdown Menu: Log Out -->
         <div x-show="open" x-transition @click.away="open = false"
             class="absolute right-0 mt-24 w-32 bg-white border-[#F83B3E] rounded-md shadow-lg py-1 z-50">
-<<<<<<< HEAD
             {{-- <form method="POST" action="{{ route('logout') }}"> --}}
-=======
-            <form method="POST" action="{{ route('logout') }}">
->>>>>>> 42f124953f68747f285d1fc2c93f70db54c8000c
                 @csrf
                 <button type="submit"
                     class="flex items-center w-full text-left px-4 py-2 text-sm font-medium text-[#F83B3E] hover:bg-[#ffecec]">
