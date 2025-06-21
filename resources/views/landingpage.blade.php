@@ -49,11 +49,9 @@
                     playlist yang kami sediakan atau dapatkan rekomendasi
                     musik sesuai personalisasi anda</p>
                 <div class="flex justify-center md:justify-start">
-                    <button
-                        class="bg-[#5a6ebf] text-white font-semibold text-[14px] md:text-[16px] rounded px-5 py-3 hover:bg-[#4a5dbf] transition"
-                        type="button">
-                        Coba sekarang
-                    </button>
+                   <a href="/login" class="bg-[#5a6ebf] text-white font-semibold text-[14px] md:text-[16px] rounded px-5 py-3 hover:bg-[#4a5dbf] transition">
+                    Coba sekarang
+                    </a>
                 </div>
             </div>
         </div>

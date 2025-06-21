@@ -3,16 +3,25 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
-use Illuminate\Http\RedirectResponse;
+use App\Services\ApiClient;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
 {
+    protected ApiClient $api;
+
+    public function __construct(ApiClient $api)
+    {
+        $this->api = $api;
+    }
+
     /**
-     * Display the login view.
+     * Tampilkan halaman login
      */
     public function create(): View
     {
@@ -20,28 +29,59 @@ class AuthenticatedSessionController extends Controller
     }
 
     /**
-     * Handle an incoming authentication request.
+     * Proses login user
      */
-    public function store(LoginRequest $request): RedirectResponse
+   public function store(Request $request): RedirectResponse
     {
-        $request->authenticate();
+        // Validasi input
+        $validator = Validator::make($request->all(), [
+            'email'    => ['required', 'email'],
+            'password' => ['required', 'min:6'],
+        ]);
 
-        $request->session()->regenerate();
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        try {
+            // Kirim request ke API eksternal
+            $response = $this->api->post('/auth/login', $validator->validated());
+            // Cek apakah berhasil
+            if ($response->successful()) {
+                $data = $response->json();
+                // Ambil token dan username dari response
+                $token = $data['token'] ?? null;
+                $user  = ['username' => $data['username'] ?? null];
+                if ($token && $user['username']) {
+                    // Simpan ke session
+                    Session::put('token', $token);
+                    Session::put('user', $user);
+                    // Jika "ingat saya" dicentang
+                    if ($request->has('remember')) {
+                        Session::put('remember_me', true);
+                    }
+                    // Redirect ke dashboard
+                    return redirect()->route('dashboard')->with('success', 'login Berhasil!');
+                }
+            }
+        } catch (\Exception $e) {
+            Log::error('Login error: ' . $e->getMessage());
+            return redirect()->back()
+                ->withErrors(['login' => 'Email atau password salah!' . $e->getMessage()])
+                ->withInput();
+        }
     }
-
     /**
-     * Destroy an authenticated session.
+     * Logout user
      */
     public function destroy(Request $request): RedirectResponse
     {
-        Auth::guard('web')->logout();
-
+        Session::forget(['token', 'user', 'remember_me']);
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/login');
     }
 }

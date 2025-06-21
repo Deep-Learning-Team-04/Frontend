@@ -3,19 +3,23 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\RedirectResponse;
+use App\Services\ApiClient;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class RegisteredUserController extends Controller
 {
+    protected ApiClient $api;
+
+    public function __construct(ApiClient $api)
+    {
+        $this->api = $api;
+    }
+
     /**
-     * Display the registration view.
+     * Show the registration page
      */
     public function create(): View
     {
@@ -23,28 +27,33 @@ class RegisteredUserController extends Controller
     }
 
     /**
-     * Handle an incoming registration request.
-     *
-     * @throws \Illuminate\Validation\ValidationException
+     * Handle the registration process using external API
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        $validator = Validator::make($request->all(), [
+            'username' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email'],
+            'password' => ['required', 'confirmed', 'min:6'],
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
 
-        event(new Registered($user));
+        $data = $validator->validated();
 
-        Auth::login($user);
+        try {
+            $response = $this->api->post('/auth/register', $data);
+            
+            if ($response->successful()) {
+                $data = $response->json();
 
-        return redirect(route('dashboard', absolute: false));
+                return redirect()->route('login')->with('success', 'Registrasi berhasil! Silakan login.');
+            }
+        } catch (\Exception $e) {
+            \Log::error('Register error: ' . $e->getMessage());
+            return back()->withErrors(['register' => 'Silahkan Coba Lagi' . $e->getMessage()])->withInput();
+        }
     }
 }

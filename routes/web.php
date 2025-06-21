@@ -2,17 +2,39 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::get('/', function () {
     return view('landingpage');
 });
 
+Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
+Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('login.store');
+
+Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
+Route::post('/register', [RegisteredUserController::class, 'store'])->name('register.store');
+
+Route::post('/logout', function () {
+    return redirect('/'); // atau ke login page
+})->name('logout');
+
+
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->name('dashboard');
 
+
+Route::get('/regis', function () {
+    return view('regis');
+})->name('regis');
 
 // admin
+
+Route::get('/admin', function () {
+    return view('admin.admindashboard');
+})->name('admin.admindashboard');
+
 Route::get('/inputartis', function () {
     return view('admin.inputartis');
 })->name('admin.inputartis');
@@ -20,7 +42,6 @@ Route::get('/inputartis', function () {
 Route::get('/inputlagu', function () {
     return view('admin.inputlagu');
 })->name('admin.inputlagu');
-
 
 //user
 Route::get('/home', function () {
@@ -35,16 +56,18 @@ Route::get('/playlist', function () {
     return view('user.playlist');
 })->name('user.playlist');
 
-Route::get('/favorite', function () {
-    return view('user.favorite');
-})->name('user.favorite');
-
 Route::get('/rekomendasiplaylist', function () {
     return view('user.rekomendasiplaylist');
 })->name('user.rekomendasiplaylist');
 
+Route::get('/playlist', function () {
+    return view('user.playlist');
+})->name('user.playlist');
+
+Route::get('/favorite', function () {
+    return view('user.favorite');
+})->name('user.favorite');
+
 Route::get('/artis', function () {
     return view('user.artis');
 })->name('user.artis');
-
-require __DIR__.'/auth.php';

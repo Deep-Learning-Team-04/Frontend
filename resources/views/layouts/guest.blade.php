@@ -33,3 +33,17 @@
 </body>
 
 </html>
+<script>
+    function showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.className = `fixed top-5 right-5 px-4 py-2 rounded shadow-lg text-white z-50 ${
+            type === 'success' ? 'bg-green-500' : 'bg-red-500'
+        }`;
+        toast.innerText = message;
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.remove();
+        }, 5000);
+    }
+</script>
