@@ -29,8 +29,8 @@
                     <label for="nama" class="inline-block font-inter text-md font-medium text-neutral">
                         Nama
                     </label>
-                    <x-text-input id="nama" class="block w-full" type="text" name="nama" placeholder="User"
-                        :disabled="true" />
+                    <x-text-input id="nama" class="block w-full" type="text" name="nama"
+                        value="{{ session('user')['username'] ?? 'User' }}" disabled />
                 </div>
 
                 <!-- Email -->
@@ -39,24 +39,23 @@
                         Email
                     </label>
                     <x-text-input id="email" class="block w-full" type="text" name="email"
-                        placeholder="User@gmail.com" :disabled="true" />
+                        value=" {{ session('user')['email'] ?? 'Email' }}" disabled />
                 </div>
-
 
                 <!-- Riwayat Musik -->
                 <div class="mt-4 pb-8">
                     <label for="riwayat" class="inline-block font-inter text-md font-medium text-neutral mb-2">
                         Riwayat Musik
                     </label>
-                    <select id="riwayat" name="riwayat"
-                        class="block w-full text-md font-inter rounded-md shadow-sm border border-gray-300 text-gray-500 bg-disabled placeholder:text-neutral">
+                    <x-select-input id="riwayat" name="riwayat">
                         <option value="tulus">Tulus</option>
                         <option value="raisa">Raisa</option>
                         <option value="pamungkas">Pamungkas</option>
                         <option value="nadin-amizah">Nadin Amizah</option>
                         <option value="hindia">Hindia</option>
-                    </select>
+                    </x-select-input>
                 </div>
+
             </div>
         </div>
     </div>
