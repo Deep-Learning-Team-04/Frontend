@@ -31,7 +31,7 @@ class AuthenticatedSessionController extends Controller
     /**
      * Proses login user
      */
-   public function store(Request $request): RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
         // Validasi input
         $validator = Validator::make($request->all(), [
@@ -53,7 +53,10 @@ class AuthenticatedSessionController extends Controller
                 $data = $response->json();
                 // Ambil token dan username dari response
                 $token = $data['token'] ?? null;
-                $user  = ['username' => $data['username'] ?? null];
+                $user  = [
+                    'username' => $data['username'] ?? null,
+                    'email'    => $data['email'] ?? null,
+                ];
                 if ($token && $user['username']) {
                     // Simpan ke session
                     Session::put('token', $token);
@@ -62,8 +65,8 @@ class AuthenticatedSessionController extends Controller
                     if ($request->has('remember')) {
                         Session::put('remember_me', true);
                     }
-                    // Redirect ke dashboard
-                    return redirect()->route('dashboard')->with('success', 'login Berhasil!');
+                    // Redirect ke home
+                    return redirect()->route('user.home')->with('success', 'login Berhasil!');
                 }
             }
         } catch (\Exception $e) {
