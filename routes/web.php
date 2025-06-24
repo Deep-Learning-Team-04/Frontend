@@ -16,32 +16,20 @@ Route::get('/register', [RegisteredUserController::class, 'create'])->name('regi
 Route::post('/register', [RegisteredUserController::class, 'store'])->name('register.store');
 
 Route::post('/logout', function () {
-    return redirect('/'); // atau ke login page
+    return redirect('/'); 
 })->name('logout');
-
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
-
 
 Route::get('/regis', function () {
     return view('regis');
 })->name('regis');
 
-// admin
-
-Route::get('/admin', function () {
-    return view('admin.admindashboard');
-})->name('admin.admindashboard');
-
 Route::get('/inputartis', function () {
-    return view('admin.inputartis');
-})->name('admin.inputartis');
+    return view('user.inputartis');
+})->name('user.inputartis');
 
 Route::get('/inputlagu', function () {
-    return view('admin.inputlagu');
-})->name('admin.inputlagu');
+    return view('user.inputlagu');
+})->name('user.inputlagu');
 
 //user
 Route::get('/home', function () {
