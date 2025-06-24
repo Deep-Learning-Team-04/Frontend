@@ -5,21 +5,35 @@
         }
     </style>
 
-    <div class="w-full max-w-7xl px-6 mx-auto" x-data="{ openMood: true, mood: '', loading: false, result: null, liked: false }">
-        <div class="w-full max-w-7xl px-6 mx-auto" x-data="{
-            openMood: true,
-            mood: '',
-            loading: false,
-            result: null,
-            liked: false,
-            open: false,
-            openModal: false,
-            selected: [],
-            playlists: ['Calm', 'Focus']
-        }">
+    <div class="w-full max-w-7xl px-6 mx-auto" x-data="{
+        openMood: true,
+        mood: '',
+        loading: false,
+        result: null,
+        liked: false,
+        open: false,
+        openModal: false,
+        selected: [],
+        playlists: ['Calm', 'Focus']
+    }">
+        <div class="w-full max-w-7xl px-6 mx-auto">
 
             <!-- Modal Mood -->
-            <div x-show="openMood" class="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
+            <div x-data="{
+                openMood: false,
+                loading: false,
+                result: null,
+                checkMoodInterval() {
+                    const lastShown = localStorage.getItem('moodLastShown');
+                    const now = new Date().getTime();
+            
+                    if (!lastShown || now - lastShown > 3 * 60 * 60 * 1000) {
+                        this.openMood = true;
+                        localStorage.setItem('moodLastShown', now);
+                    }
+                }
+            }" x-init="checkMoodInterval()" x-cloak x-show="openMood"
+                class="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
                 <div
                     class="bg-[#f1f8fc] border-2 border-primary p-10 rounded-md shadow-lg w-full max-w-xl text-center relative">
                     <button @click="openMood = false"
@@ -65,7 +79,7 @@
             </div>
 
             <!-- Modal playlist tersimpan -->
-            <div x-show="$store.modalStore.open"
+            <div x-cloak x-show="$store.modalStore.open"
                 class="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
                 <div class="bg-[#f1f8fc] border-2 border-primary rounded-lg p-10 w-[400px]">
                     <div class="flex items-center mb-6">
@@ -117,7 +131,7 @@
             </div>
 
             <!-- Modal Tambah Playlist -->
-            <div x-show="$store.modalStore.openCreateModal"
+            <div x-cloak x-show="$store.modalStore.openCreateModal"
                 class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                 <div
                     class="bg-[#f1f8fc] border-2 border-primary rounded-md shadow-lg p-10 relative w-[600px] h-[320px]">
@@ -166,7 +180,7 @@
 
         <!-- Artis Viral -->
         <section class="mt-10">
-            <h1 class="font-roboto text-3xl font-semibold text-primary mb-4">Artis Viral</h1>
+            <h1 class="font-roboto text-3xl font-semibold text-primary mb-4">Artis</h1>
             <div class="flex space-x-6 overflow-x-auto scrollbar-hide pb-2 items-center">
                 <div class="flex-shrink-0 flex flex-col items-center w-28">
                     <img src="img/hero.png" alt="artist"
@@ -345,11 +359,7 @@
                 open: false,
                 openCreateModal: false,
                 searchQuery: '',
-<<<<<<< HEAD
-                playlists: [], // data playlist
-=======
                 playlists: ['Calm', 'Focus'], // data playlist
->>>>>>> 42f124953f68747f285d1fc2c93f70db54c8000c
                 selected: [],
                 toggleSelected(playlist) {
                     if (this.selected.includes(playlist)) {

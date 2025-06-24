@@ -7,18 +7,17 @@
     </style>
 
     {{-- Kontainer utama --}}
-    <div class="w-full max-w-7xl px-6 mx-auto" x-data="{ result: null, liked: false }">
-        <div class="w-full max-w-7xl px-6 mx-auto" x-data="{
-            result: null,
-            liked: false,
-            open: false,
-            openModal: false,
-            selected: [],
-            playlists: ['Calm', 'Focus']
-        }">
+    <div class="w-full max-w-7xl px-6 mx-auto" x-data="{
+        result: null,
+        liked: false,
+        open: false,
+        openModal: false,
+        selected: [],
+        playlists: ['Calm', 'Focus']}">
+        <div class="w-full max-w-7xl px-6 mx-auto">
 
             <!-- Modal playlist tersimpan -->
-            <div x-show="$store.modalStore.open"
+            <div x-cloak x-show="$store.modalStore.open"
                 class="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
                 <div class="bg-[#f1f8fc] border-2 border-primary rounded-lg p-10 w-[400px]">
                     <div class="flex items-center mb-6">
@@ -70,7 +69,7 @@
             </div>
 
             <!-- Modal Tambah Playlist -->
-            <div x-show="$store.modalStore.openCreateModal"
+            <div x-cloak x-show="$store.modalStore.openCreateModal"
                 class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                 <div
                     class="bg-[#f1f8fc] border-2 border-primary rounded-md shadow-lg p-10 relative w-[600px] h-[320px]">
@@ -109,8 +108,8 @@
                 <h2 class="font-roboto text-[24px] font-semibold text-neu900">Nama Playlist</h2>
                 <p class="font-inter text-[16px] font-medium text-[#adb5af] mb-8">Deskripsi Playlist</p>
                 <p class="font-inter text-[14px] font-medium text-primary">10 lagu | 35 Menit</p>
-                <button id="playPause"
-                    class="relative w-16 h-16 bg-primary rounded-full text-white flex items-center justify-center">
+                <button
+                    class="mt-4 playPauseBtn relative w-16 h-16 bg-primary rounded-full text-white flex items-center justify-center">
                     <!-- Ikon Play -->
                     <svg class="play-icon absolute inset-0 m-auto w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M8 5v14l11-7z" />
@@ -143,8 +142,8 @@
                         <div class="flex items-center gap-1 bg-[#F1F8FC] rounded-md px-4 py-3 max-w-[600px] w-full">
                             <!-- Tombol Play/Pause -->
                             <div class="flex items-center gap-2">
-                                <button id="playPause"
-                                    class="relative w-8 h-8 bg-primary rounded-full text-white flex items-center justify-center">
+                                <button
+                                    class="playPauseBtn relative w-8 h-8 bg-primary rounded-full text-white flex items-center justify-center">
                                     <!-- Ikon Play -->
                                     <svg class="play-icon absolute inset-0 m-auto w-4 h-4" fill="currentColor"
                                         viewBox="0 0 24 24">
@@ -199,12 +198,11 @@
         </div>
     </div>
 
-
     <script src="https://unpkg.com/wavesurfer.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const wavesurfer = WaveSurfer.create({
-                container: '#wave',
+                container: '#wave', // container utama waveform
                 waveColor: '#e5f1fa',
                 progressColor: '#7b9cd9',
                 height: 24
@@ -212,16 +210,20 @@
 
             wavesurfer.load("/audio/komang.mp3");
 
-            const playButton = document.querySelector("#playPause");
-            const playIcon = playButton.querySelector(".play-icon");
-            const pauseIcon = playButton.querySelector(".pause-icon");
+            const playButtons = document.querySelectorAll(".playPauseBtn");
+
+            // Ambil semua ikon play/pause dari kedua tombol
+            const playIcons = document.querySelectorAll(".playPauseBtn .play-icon");
+            const pauseIcons = document.querySelectorAll(".playPauseBtn .pause-icon");
+
             const currentTimeEl = document.querySelector("#current");
             const durationEl = document.querySelector("#duration");
 
-            pauseIcon.classList.add("hidden");
-
-            playButton.addEventListener("click", () => {
-                wavesurfer.playPause();
+            // Tambahkan event listener ke semua tombol
+            playButtons.forEach(button => {
+                button.addEventListener("click", () => {
+                    wavesurfer.playPause();
+                });
             });
 
             wavesurfer.on("ready", () => {
@@ -233,18 +235,18 @@
             });
 
             wavesurfer.on("play", () => {
-                playIcon.classList.add("hidden");
-                pauseIcon.classList.remove("hidden");
+                playIcons.forEach(icon => icon.classList.add("hidden"));
+                pauseIcons.forEach(icon => icon.classList.remove("hidden"));
             });
 
             wavesurfer.on("pause", () => {
-                playIcon.classList.remove("hidden");
-                pauseIcon.classList.add("hidden");
+                playIcons.forEach(icon => icon.classList.remove("hidden"));
+                pauseIcons.forEach(icon => icon.classList.add("hidden"));
             });
 
             wavesurfer.on("finish", () => {
-                playIcon.classList.remove("hidden");
-                pauseIcon.classList.add("hidden");
+                playIcons.forEach(icon => icon.classList.remove("hidden"));
+                pauseIcons.forEach(icon => icon.classList.add("hidden"));
                 currentTimeEl.textContent = "0:00";
             });
 
@@ -254,7 +256,6 @@
                 return `${minutes}:${secs}`;
             }
         });
-
         document.addEventListener('alpine:init', () => {
             Alpine.store('modalStore', {
                 open: false,
@@ -285,4 +286,5 @@
             });
         });
     </script>
+
 </x-app-layout>
