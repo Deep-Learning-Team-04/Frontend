@@ -1,15 +1,33 @@
 <nav
     class="bg-[#7B9CD9] shadow-[0_4px_16px_rgba(0,0,0,0.3)] h-16 flex items-center justify-between z-50 fixed top-0 inset-x-0 px-12">
-
-    <!-- Kiri: Logo -->
-    <div class="flex items-center">
+    <!-- Kiri: Logo dan Search Bar -->
+    <div class="flex items-center space-x-6">
+        <!-- Logo -->
         <img src="{{ asset('img/logo.png') }}" alt="Logo" class="h-6 mr-2">
+
+        <!-- Tombol Home -->
+        <a href="{{ route('user.home') }}">
+            <div
+                class="bg-white rounded-full p-2 flex items-center justify-center border-2 border-transparent hover:border-[#516ab1] hover:shadow-lg transition duration-200">
+                <img src="{{ asset('img/home.png') }}" alt="Home" class="w-6 h-6" />
+            </div>
+        </a>
+
+        <!-- Search Bar -->
+        <div class="relative w-[500px]">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <img src="{{ asset('img/search.png') }}" alt="search" class="w-6 h-6" />
+            </div>
+            <input type="text" placeholder="Cari judul lagu dan artis"
+                class="pl-12 pr-4 py-[6px] w-full rounded bg-white border-2 border-[#EBEDEC] placeholder:text-[#ADB5AF] focus:outline-none focus:ring-2 focus:ring-primary text-sm transition"
+                x-model="searchQuery" />
+        </div>
     </div>
 
-    <!-- Avatar & Dropdown -->
+    <!-- Kanan: Avatar & Dropdown -->
     <div class="flex items-center space-x-2 text-white relative" x-data="{ open: false }">
         <span class="text-md font-medium">
-            Halo, {{ Auth::check() && !empty(Auth::user()->name) ? Auth::user()->name : 'User' }}
+            Halo, {{ session('user')['username'] ?? 'User' }}
         </span>
 
         <!-- Avatar SVG (klik untuk toggle logout) -->
@@ -19,28 +37,26 @@
                 d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z" />
         </svg>
 
-        <!-- Dropdown Menu: Log Out -->
-        <div x-show="open" x-transition @click.away="open = false"
-            class="absolute right-0 mt-24 w-32 bg-white border-[#F83B3E] rounded-md shadow-lg py-1 z-50">
-<<<<<<< HEAD
-            {{-- <form method="POST" action="{{ route('logout') }}"> --}}
-=======
+        <!-- Dropdown Menu -->
+        <div x-cloak x-show="open" x-transition @click.away="open = false"
+            class="absolute right-0 mt-36 w-48 bg-white border-[#F83B3E] rounded-md shadow-lg py-1 z-50">
+
+            <!-- Tombol Logout -->
             <form method="POST" action="{{ route('logout') }}">
->>>>>>> 42f124953f68747f285d1fc2c93f70db54c8000c
                 @csrf
+                <!-- Link Profile -->
+                <a href="{{ route('user.profile') }}"
+                    class="flex items-center w-full text-left px-4 py-2 text-sm font-medium text-primary hover:bg-[#f1f8fc]">
+                    <img src="{{ asset('img/profile.png') }}" alt="Home" class="w-4 h-4" />
+                    <span class="ml-2">Profile</span>
+                </a>
                 <button type="submit"
                     class="flex items-center w-full text-left px-4 py-2 text-sm font-medium text-[#F83B3E] hover:bg-[#ffecec]">
-                    <!-- Ikon Logout -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 stroke-[#F83B3E]" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1" />
-                    </svg>
-
-                    <!-- Teks -->
+                    <img src="{{ asset('img/logout.png') }}" alt="Home" class="w-4 h-4" />
                     <span class="ml-2">Keluar</span>
                 </button>
             </form>
         </div>
     </div>
+
 </nav>
