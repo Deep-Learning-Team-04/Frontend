@@ -35,7 +35,7 @@ class RekomendasiLaguController extends Controller
                 ]);
             }
 
-            return redirect()->back()->with('error', 'Failed to fetch recommendations');
+            return redirect()->back()->with('error', 'Gagal memuat playlist');
         } catch (\Exception $e) {
             Log::error('Recommendation API Error: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Service unavailable');

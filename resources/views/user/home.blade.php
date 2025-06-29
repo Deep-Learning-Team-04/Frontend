@@ -169,56 +169,6 @@
             </div>
 
             <!-- Modal playlist tersimpan -->
-            {{-- <div x-cloak x-show="$store.modalStore.open"
-                class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                <div class="bg-[#f1f8fc] border-2 border-primary rounded-lg p-10 w-[400px]">
-                    <div class="flex items-center mb-6">
-                        <div class="relative w-full">
-                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                <img src="img/search.png" alt="search" class="w-4 h-4" />
-                            </div>
-                            <input type="text" placeholder="Cari Playlist"
-                                class="pl-10 pr-3 py-2 w-full rounded bg-white border-2 border-[#EBEDEC] placeholder:text-[#ADB5AF] focus:outline-none focus:ring-2 focus:ring-primary text-sm transition"
-                                x-model="$store.modalStore.searchQuery" />
-                        </div>
-                        <button @click="$store.modalStore.open = false; $store.modalStore.openCreateModal = true"
-                            class="ml-2 p-2 bg-white border border-primary rounded text-primary hover:bg-[#f1f8fc] text-xl leading-none">
-                            +
-                        </button>
-                    </div>
-                    <h2 class="text-[18px] font-medium text-[#8F9992] mb-0">Playlist tersimpan</h2>
-
-                    <!-- Playlist Item -->
-                    <template x-for="playlist in $store.modalStore.filteredPlaylists" :key="playlist">
-                        <div @click="$store.modalStore.toggleSelected(playlist)"
-                            class="flex items-center justify-between p-2 rounded hover:bg-[#f1f8fc] cursor-pointer transition"
-                            :class="{ 'bg-[#e1f0ff]': $store.modalStore.selected.includes(playlist) }">
-                            <div class="flex items-center gap-3">
-                                <div class="bg-[#D0E4F5] w-10 h-10 rounded flex items-center justify-center">
-                                    <img src="img/playlist.png" alt="playlist" class="w-[20px] h-[20px]" />
-                                </div>
-                                <div>
-                                    <p class="text-[14px] font-medium text-neu900" x-text="playlist"></p>
-                                    <p class="text-[12px] font-medium text-[#ADB5AF]">5 lagu</p>
-                                </div>
-                            </div>
-                            <div class="w-5 h-5 rounded-xl border-2 border-[#516ab1] flex items-center justify-center">
-                                <div class="w-2 h-2 rounded bg-primary"
-                                    x-show="$store.modalStore.selected.includes(playlist)"></div>
-                            </div>
-                        </div>
-                    </template>
-
-                    <div class="flex justify-between mt-4">
-                        <x-secondary-button @click="$store.modalStore.open = false" class="w-[150px] h-[36px]">
-                            Kembali
-                        </x-secondary-button>
-                        <x-primary-button @click="$store.modalStore.saveSelection" class="w-[150px] h-[36px]">
-                            Simpan
-                        </x-primary-button>
-                    </div>
-                </div>
-            </div> --}}
             <div x-cloak x-show="$store.modalStore.open"
                 class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                 <div class="bg-[#f1f8fc] border-2 border-primary rounded-lg p-10 w-[400px]">
@@ -325,8 +275,7 @@
                         <img src="img/playlist.png" alt="playlist" class="w-20 h-20" />
                     </div>
                     <div class="p-3 bg-[#F1F8FC]">
-                        <p class="font-inter text-[16px] font-medium text-[#181B19]">Stecu Stecu</p>
-                        <p class="font-inter text-[14px] font-normal text-[#6e7971]">Faris Adam</p>
+                        <p class="font-inter text-[16px] font-medium text-[#181B19]">Berdasarkan <br> preferensi Anda</p>
                     </div>
                 </a>
             </div>
@@ -369,9 +318,11 @@
         <section class="mt-10">
             {{-- Header Baris --}}
             <div class="flex items-center px-6 py-2 text-sm font-semibold text-gray-700">
-                <div class="w-[800px] font-inter text-[14px] font-medium text-neu900">Judul</div>
-                <div class="w-[100px] text-center font-inter text-[14px] font-medium text-neu900">Duration</div>
-                <div class="w-[100px] text-center font-inter text-[14px] font-medium text-neu900">Mood</div>
+                {{--  Spacer untuk gambar  --}}
+                <div class="w-[64px]"></div>
+                <div class="w-[600px] font-inter text-[14px] font-medium text-neu900">Judul</div>
+                <div class="w-[200px] text-center font-inter text-[14px] font-medium text-neu900">Duration</div>
+                <div class="w-[50px] text-center font-inter text-[14px] font-medium text-neu900">Mood</div>
             </div>
 
             @foreach ($songs as $index => $song)

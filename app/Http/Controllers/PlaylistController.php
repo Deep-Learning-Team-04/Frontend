@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\ApiClient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\View\View;
 
 class PlaylistController extends Controller
 {
@@ -57,7 +58,6 @@ class PlaylistController extends Controller
                 ->with('error', 'Terjadi kesalahan sistem. Silakan coba lagi.');
         }
     }
-    // App\Http\Controllers\PlaylistController.php
 
     public function index()
     {
@@ -76,8 +76,6 @@ class PlaylistController extends Controller
             return response()->json([], 500);
         }
     }
-
-    // App\Http\Controllers\PlaylistController.php
 
     public function addSongToPlaylist(Request $request, $playlistId)
     {
@@ -100,5 +98,11 @@ class PlaylistController extends Controller
             Log::error('Error adding song to playlist: ' . $e->getMessage());
             return response()->json(['success' => false, 'message' => 'Terjadi kesalahan sistem'], 500);
         }
+    }
+
+    public function show(string $id): View
+    {
+        
+        return view('user.playlist', ['playlistId' => $id]);
     }
 }
