@@ -19,6 +19,7 @@ class ArtisController extends Controller
     {
         $artist = null;
         $isFavorite = false;
+        $favoriteArtists = [];
         $userEmail = session('user')['username'] ?? null;
 
         try {
@@ -28,9 +29,13 @@ class ArtisController extends Controller
                 $artist = $artistResponse->json();
                 // dd('Data Artis:', $artist);
                 if ($userEmail) {
-                    $favoriteCheckResponse = $this->api->get("users/{$userEmail}/favorite-artist/{$id}");
+                    $favoriteCheckResponse = $this->api->get("users/{$userEmail}/favorite-artists");
+                    // dd($favoriteCheckResponse->status(), $favoriteCheckResponse->body());
+
                     if ($favoriteCheckResponse->successful()) {
-                        $isFavorite = $favoriteCheckResponse->json()['is_favorite'] ?? false;
+                        $favoriteArtists = $favoriteCheckResponse->json()['favorite_artists'] ?? [];
+                        // dd('Data Favorite:', $favoriteCheckResponse->json());
+                        // dd($isFavorite);
                     }
                 }
             } else {
@@ -43,13 +48,14 @@ class ArtisController extends Controller
         return view('user.artis', [
             'artist' => $artist,
             'isFavorite' => $isFavorite,
-            'artistId' => $id
+            'artistId' => $id,
+            'favoriteArtists' => $favoriteArtists
         ]);
     }
     public function toggleFavorite(Request $request, $artistId)
     {
         $userEmail = session('user')['username'] ?? null;
-        
+
         if (!$userEmail) {
             return response()->json(['error' => 'User not authenticated'], 401);
         }
