@@ -29,7 +29,7 @@
                     checkMoodInterval() {
                         const lastShown = localStorage.getItem('moodLastShown');
                         const now = new Date().getTime();
-
+            
                         if (!lastShown || now - lastShown > 3 * 60 * 60 * 1000) {
                             this.openMood = true;
                             localStorage.setItem('moodLastShown', now);
@@ -44,7 +44,7 @@
                     async fetchMood(mood) {
                         this.loading = true;
                         const apiMood = this.moodMap[mood] || 'happy';
-
+            
                         try {
                             const response = await fetch('/save-mood', {
                                 method: 'POST',
@@ -54,9 +54,9 @@
                                 },
                                 body: JSON.stringify({ mood: apiMood })
                             });
-
+            
                             const data = await response.json();
-
+            
                             if (data.success) {
                                 console.log('Berhasil menyimpan mood:', {
                                     mood: mood,
@@ -77,7 +77,7 @@
                             this.loading = false;
                         }
                     }
-
+            
             }" x-init="checkMoodInterval()" x-cloak x-show="openMood"
                 class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                 <div
@@ -95,8 +95,8 @@
                     <div class="flex justify-between px-6 mt-8 text-center">
                         <div>
                             <button @click="fetchMood('sedih')" title="Sedih">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="61" viewBox="0 0 60 61"
-                                    fill="none">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="61"
+                                    viewBox="0 0 60 61" fill="none">
                                     <mask id="mask0_923_1767" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
                                         y="0" width="80" height="80">
                                         <rect y="0.5" width="60" height="60" fill="#D9D9D9" />
@@ -112,8 +112,8 @@
                         </div>
                         <div>
                             <button @click="fetchMood('tenang')" title="Tenang">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="61" viewBox="0 0 60 61"
-                                    fill="none">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="61"
+                                    viewBox="0 0 60 61" fill="none">
                                     <mask id="mask0_923_1770" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
                                         y="0" width="60" height="61">
                                         <rect y="0.5" width="60" height="60" fill="#D9D9D9" />
@@ -129,8 +129,8 @@
                         </div>
                         <div>
                             <button @click="fetchMood('senang')" title="Senang">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="61" viewBox="0 0 60 61"
-                                    fill="none">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="61"
+                                    viewBox="0 0 60 61" fill="none">
                                     <mask id="mask0_923_1773" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
                                         y="0" width="60" height="61">
                                         <rect y="0.5" width="60" height="60" fill="#D9D9D9" />
@@ -146,8 +146,8 @@
                         </div>
                         <div>
                             <button @click="fetchMood('marah')" title="Marah">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="61" viewBox="0 0 60 61"
-                                    fill="none">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="61"
+                                    viewBox="0 0 60 61" fill="none">
                                     <mask id="mask0_923_1776" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
                                         y="0" width="60" height="61">
                                         <rect y="0.5" width="60" height="60" fill="#D9D9D9" />
@@ -291,17 +291,18 @@
                                 <img src="img/playlist.png" alt="playlist" class="w-[84px] h-[84px]" />
                             </div>
                             <div class="flex flex-col flex-1 gap-3">
-                                <input name="name" type="text" placeholder="Nama playlist" value="{{ old('name') }}"
+                                <input name="name" type="text" placeholder="Nama playlist"
+                                    value="{{ old('name') }}"
                                     class="p-2 rounded bg-[#EBEDEC] placeholder:text-[#ADB5AF] text-sm focus:outline-none focus:ring-2 focus:ring-primary transition"
                                     required />
                                 @error('name')
-                                <span class="text-xs text-red-500">{{ $message }}</span>
+                                    <span class="text-xs text-red-500">{{ $message }}</span>
                                 @enderror
 
                                 <textarea name="description" placeholder="Tambahkan deskripsi (opsional)"
                                     class="p-2 rounded bg-[#EBEDEC] placeholder:text-[#ADB5AF] text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none h-[100px] transition">{{ old('description') }}</textarea>
                                 @error('description')
-                                <span class="text-xs text-red-500">{{ $message }}</span>
+                                    <span class="text-xs text-red-500">{{ $message }}</span>
                                 @enderror
                             </div>
                         </div>
@@ -340,27 +341,27 @@
             <div class="flex pb-2 space-x-6 overflow-x-auto scrollbar-hide">
                 {{-- Cek artis kosong --}}
                 @if (!empty($artists))
-                {{-- Loop API artis --}}
-                @foreach ($artists as $artist)
-                {{-- Tambahkan tag <a> yang mengarah ke rute 'artists.show' --}}
-                    <a href="{{ route('artis', ['id' => $artist['id']]) }}"
-                        class="flex flex-col items-center flex-shrink-0 w-28">
-                        {{-- Data img --}}
-                        <img src="{{ $artist['image_url'] ?? 'https://placehold.co/112x112/EFEFEF/181B19?text=Artis' }}"
-                            alt="{{ $artist['name'] ?? 'Artist Name' }}"
-                            class="object-cover transition duration-200 border-2 border-transparent rounded-full w-28 h-28 hover:border-primary hover:shadow-lg"
-                            onerror="this.onerror=null;this.src='https://placehold.co/112x112/EFEFEF/181B19?text=Gagal+Muat';" />
-                        {{-- Display nama artis --}}
-                        <p
-                            class="mt-2 font-inter text-[16px] font-medium text-[#181B19] text-center w-28 break-words leading-tight line-clamp-2">
-                            {{ $artist['name'] ?? 'Nama Artis' }}
-                        </p>
-                    </a>
+                    {{-- Loop API artis --}}
+                    @foreach ($artists as $artist)
+                        {{-- Tambahkan tag <a> yang mengarah ke rute 'artists.show' --}}
+                        <a href="{{ route('artis', ['id' => $artist['id']]) }}"
+                            class="flex flex-col items-center flex-shrink-0 w-28">
+                            {{-- Data img --}}
+                            <img src="{{ $artist['image_url'] ?? 'https://placehold.co/112x112/EFEFEF/181B19?text=Artis' }}"
+                                alt="{{ $artist['name'] ?? 'Artist Name' }}"
+                                class="object-cover transition duration-200 border-2 border-transparent rounded-full w-28 h-28 hover:border-primary hover:shadow-lg"
+                                onerror="this.onerror=null;this.src='https://placehold.co/112x112/EFEFEF/181B19?text=Gagal+Muat';" />
+                            {{-- Display nama artis --}}
+                            <p
+                                class="mt-2 font-inter text-[16px] font-medium text-[#181B19] text-center w-28 break-words leading-tight line-clamp-2">
+                                {{ $artist['name'] ?? 'Nama Artis' }}
+                            </p>
+                        </a>
                     @endforeach
-                    @else
+                @else
                     {{-- jika tidak ditemukam --}}
                     <p class="text-gray-500 font-inter">Tidak ada artis yang ditemukan.</p>
-                    @endif
+                @endif
             </div>
         </section>
 
@@ -373,7 +374,8 @@
                 <div class="w-[100px] text-center font-inter text-[14px] font-medium text-neu900">Mood</div>
             </div>
 
-            <div class="flex items-center bg-[#F1F8FC] rounded-md px-6 py-3 mb-3">
+            @foreach ($songs as $index => $song)
+                <div class="flex items-center bg-[#F1F8FC] rounded-md px-6 py-3 mb-3">
                     {{-- Cover Image --}}
                     <img class="w-12 h-12 rounded-md object-cover"
                         src="{{ $song['artist_image'] ?? 'https://placehold.co/48x48' }}" alt="Cover" />
@@ -420,106 +422,113 @@
                         </div>
 
                         {{-- Mood --}}
-                        <div class="flex items-center max-w-[150px] w-full">
+                        <div class="w-[100px] text-center flex-shrink-0">
                             <p class="font-inter text-[14px] font-medium text-[#3E4451] truncate">
-                                {{ $song['mood'] ?? 'mood' }}
+                                {{ $song['mood'] ?? 'Mood' }}
                             </p>
                         </div>
-                        <div class="flex items-center gap-2 ml-auto">
-                        <!-- Tombol Add / Open Modal -->
-                        <button @click="$store.modalStore.openModal(@js($song))"
-                            class="w-4 h-4 text-[#adb5af] hover:text-primary" title="Tambah ke playlist">
-                            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-                            </svg>
-                        </button>
-                        <button @click="liked = !liked" :class="liked ? 'text-[#f83b3e]' : 'text-[#adb5af]'"
-                            class="w-5 h-5 hover:text-[#f83b3e]" title="Favorite">
-                            <svg :fill="liked ? '#f83b3e' : 'none'" stroke="currentColor" stroke-width="2"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                            </svg>
-                        </button>
-                    </div>
+
+                        {{-- Tombol Aksi --}}
+                        <div class="flex items-center gap-2 ml-2 flex-shrink-0">
+                            <button
+                                @click="
+                        if ($store.modalStore.playlists.length === 0) {
+                            $store.modalStore.openCreateModal = true;
+                        } else {
+                            $store.modalStore.open = true;
+                        }"
+                                class="w-4 h-4 text-[#adb5af] hover:text-primary" title="Tambah ke playlist">
+                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                                </svg>
+                            </button>
+
+                            <button @click="liked = !liked" :class="liked ? 'text-[#f83b3e]' : 'text-[#adb5af]'"
+                                class="w-5 h-5 hover:text-[#f83b3e]" title="Favorite">
+                                <svg :fill="liked ? '#f83b3e' : 'none'" stroke="currentColor" stroke-width="2"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                </svg>
+                            </button>
+                        </div>
                     </div>
                 </div>
-            @endforeach
+                <script>
+                    function togglePlay(songId) {
+                        const audio = document.getElementById(`audio-${songId}`);
+                        const playIcon = document.getElementById(`play-icon-${songId}`);
+                        const pauseIcon = document.getElementById(`pause-icon-${songId}`);
 
-            <script>
-                function togglePlay(songId) {
-                    const audio = document.getElementById(`audio-${songId}`);
-                    const playIcon = document.getElementById(`play-icon-${songId}`);
-                    const pauseIcon = document.getElementById(`pause-icon-${songId}`);
+                        // Pause semua audio lain
+                        document.querySelectorAll('audio').forEach(aud => {
+                            if (aud.id !== `audio-${songId}`) {
+                                aud.pause();
+                                const otherId = aud.id.split('-')[1];
+                                document.getElementById(`play-icon-${otherId}`).classList.remove('hidden');
+                                document.getElementById(`pause-icon-${otherId}`).classList.add('hidden');
+                            }
+                        });
 
-                    // Pause semua audio lain
-                    document.querySelectorAll('audio').forEach(aud => {
-                        if (aud.id !== `audio-${songId}`) {
-                            aud.pause();
-                            const otherId = aud.id.split('-')[1];
-                            document.getElementById(`play-icon-${otherId}`).classList.remove('hidden');
-                            document.getElementById(`pause-icon-${otherId}`).classList.add('hidden');
-                        }
-                    });
+                        if (audio.paused) {
+                            audio.play();
+                            playIcon.classList.add('hidden');
+                            pauseIcon.classList.remove('hidden');
 
-                    if (audio.paused) {
-                        audio.play();
-                        playIcon.classList.add('hidden');
-                        pauseIcon.classList.remove('hidden');
-
-                        // Kirim request ke endpoint "songs/play"
-                        fetch('/songs/play', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                                },
-                                body: JSON.stringify({
-                                    song_id: songId
+                            // Kirim request ke endpoint "songs/play"
+                            fetch('/songs/play', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                    },
+                                    body: JSON.stringify({
+                                        song_id: songId
+                                    })
                                 })
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                console.log('Berhasil mengirim data:', data);
-                            })
-                            .catch(error => {
-                                console.error('Gagal mengirim data:', error);
-                            });
+                                .then(response => response.json())
+                                .then(data => {
+                                    console.log('Berhasil mengirim data:', data);
+                                })
+                                .catch(error => {
+                                    console.error('Gagal mengirim data:', error);
+                                });
 
-                    } else {
-                        audio.pause();
-                        playIcon.classList.remove('hidden');
-                        pauseIcon.classList.add('hidden');
+                        } else {
+                            audio.pause();
+                            playIcon.classList.remove('hidden');
+                            pauseIcon.classList.add('hidden');
+                        }
                     }
-                }
 
-                document.querySelectorAll('audio').forEach(audio => {
-                    const songId = audio.id.split('-')[1];
-                    const progress = document.getElementById(`progress-${songId}`);
-                    const currentTime = document.getElementById(`current-time-${songId}`);
-                    const duration = document.getElementById(`duration-${songId}`);
+                    document.querySelectorAll('audio').forEach(audio => {
+                        const songId = audio.id.split('-')[1];
+                        const progress = document.getElementById(`progress-${songId}`);
+                        const currentTime = document.getElementById(`current-time-${songId}`);
+                        const duration = document.getElementById(`duration-${songId}`);
 
-                    audio.addEventListener('loadedmetadata', () => {
-                        duration.textContent = formatTime(audio.duration);
+                        audio.addEventListener('loadedmetadata', () => {
+                            duration.textContent = formatTime(audio.duration);
+                        });
+
+                        audio.addEventListener('timeupdate', () => {
+                            progress.value = (audio.currentTime / audio.duration) * 100;
+                            currentTime.textContent = formatTime(audio.currentTime);
+                        });
+
+                        progress.addEventListener('input', () => {
+                            const seekTime = (progress.value / 100) * audio.duration;
+                            audio.currentTime = seekTime;
+                        });
                     });
 
-                    audio.addEventListener('timeupdate', () => {
-                        progress.value = (audio.currentTime / audio.duration) * 100;
-                        currentTime.textContent = formatTime(audio.currentTime);
-                    });
-
-                    progress.addEventListener('input', () => {
-                        const seekTime = (progress.value / 100) * audio.duration;
-                        audio.currentTime = seekTime;
-                    });
-                });
-
-                function formatTime(seconds) {
-                    const minutes = Math.floor(seconds / 60);
-                    const secs = Math.floor(seconds % 60);
-                    return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
-                }
-            </script>
+                    function formatTime(seconds) {
+                        const minutes = Math.floor(seconds / 60);
+                        const secs = Math.floor(seconds % 60);
+                        return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+                    }
+                </script>
+            @endforeach
         </section>
     </div>
 
@@ -591,7 +600,8 @@
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                                'X-CSRF-TOKEN': document.querySelector(
+                                    'meta[name="csrf-token"]').content
                             },
                             body: JSON.stringify({
                                 song_id: this.currentSong.id
