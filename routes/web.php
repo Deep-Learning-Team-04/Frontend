@@ -40,7 +40,7 @@ Route::post('/artists/{artist}/toggle-favorite', [ArtisController::class, 'toggl
 
 Route::get('/rekomendasiplaylist', [RekomendasiLaguController::class, 'getRecommendations'])->name('user.rekomendasiplaylist');
 
-    
+
 Route::post('/logout', function () {
     return redirect('/');
 })->name('logout');

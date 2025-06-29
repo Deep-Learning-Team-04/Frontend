@@ -102,7 +102,7 @@ class PlaylistController extends Controller
 
     public function show(string $id): View
     {
-        
+
         return view('user.playlist', ['playlistId' => $id]);
     }
 }

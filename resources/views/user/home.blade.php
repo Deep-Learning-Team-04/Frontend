@@ -29,7 +29,7 @@
                     checkMoodInterval() {
                         const lastShown = localStorage.getItem('moodLastShown');
                         const now = new Date().getTime();
-            
+
                         if (!lastShown || now - lastShown > 3 * 60 * 60 * 1000) {
                             this.openMood = true;
                             localStorage.setItem('moodLastShown', now);
@@ -44,7 +44,7 @@
                     async fetchMood(mood) {
                         this.loading = true;
                         const apiMood = this.moodMap[mood] || 'happy';
-            
+
                         try {
                             const response = await fetch('/save-mood', {
                                 method: 'POST',
@@ -54,9 +54,9 @@
                                 },
                                 body: JSON.stringify({ mood: apiMood })
                             });
-            
+
                             const data = await response.json();
-            
+
                             if (data.success) {
                                 console.log('Berhasil menyimpan mood:', {
                                     mood: mood,
@@ -77,7 +77,7 @@
                             this.loading = false;
                         }
                     }
-            
+
             }" x-init="checkMoodInterval()" x-cloak x-show="openMood"
                 class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                 <div
@@ -169,7 +169,7 @@
             </div>
 
             <!-- Modal playlist tersimpan -->
-            <div x-cloak x-show="$store.modalStore.open"
+            {{-- <div x-cloak x-show="$store.modalStore.open"
                 class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                 <div class="bg-[#f1f8fc] border-2 border-primary rounded-lg p-10 w-[400px]">
                     <!-- Header dan Search -->
@@ -203,6 +203,59 @@
                                     <p class="text-[14px] font-medium text-neu900" x-text="playlist.name"></p>
                                     <p class="text-[12px] font-medium text-[#ADB5AF]"
                                         x-text="`${playlist.song_count || 0} lagu`"></p>
+                                </div>
+                            </div>
+                            <div class="w-5 h-5 rounded-xl border-2 border-[#516ab1] flex items-center justify-center">
+                                <div class="w-2 h-2 rounded bg-primary"
+                                    x-show="$store.modalStore.isSelected(playlist.id)"></div>
+                            </div>
+                        </div>
+                    </template>
+
+                    <!-- Tombol Aksi -->
+                    <div class="flex justify-between mt-4">
+                        <x-secondary-button @click="$store.modalStore.resetModal()" class="w-[150px] h-[36px]">
+                            Kembali
+                        </x-secondary-button>
+                        <x-primary-button @click="$store.modalStore.saveSelection()" class="w-[150px] h-[36px]">
+                            Simpan
+                        </x-primary-button>
+                    </div>
+                </div>
+            </div> --}}
+
+            <div x-cloak x-show="$store.modalStore.open" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                <div class="bg-[#f1f8fc] border-2 border-primary rounded-lg p-10 w-[400px]">
+                    <!-- Header dan Search -->
+                    <div class="flex items-center mb-6">
+                        <div class="relative w-full">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <img src="img/search.png" alt="search" class="w-4 h-4" />
+                            </div>
+                            <input type="text" placeholder="Cari Playlist"
+                                class="pl-10 pr-3 py-2 w-full rounded bg-white border-2 border-[#EBEDEC] placeholder:text-[#ADB5AF] focus:outline-none focus:ring-2 focus:ring-primary text-sm transition"
+                                x-model="$store.modalStore.searchQuery" />
+                        </div>
+                        <button @click="$store.modalStore.open = false; $store.modalStore.openCreateModal = true"
+                            class="ml-2 p-2 bg-white border border-primary rounded text-primary hover:bg-[#f1f8fc] text-xl leading-none">
+                            +
+                        </button>
+                    </div>
+
+                    <h2 class="text-[18px] font-medium text-[#8F9992] mb-0">Playlist tersimpan</h2>
+
+                    <!-- Daftar Playlist -->
+                    <template x-for="playlist in $store.modalStore.filteredPlaylists" :key="playlist.id">
+                        <div @click="$store.modalStore.selectPlaylist(playlist.id)"
+                            class="flex items-center justify-between p-2 rounded hover:bg-[#f1f8fc] cursor-pointer transition"
+                            :class="{ 'bg-[#e1f0ff]': $store.modalStore.isSelected(playlist.id) }">
+                            <div class="flex items-center gap-3">
+                                <div class="bg-[#D0E4F5] w-10 h-10 rounded flex items-center justify-center">
+                                    <img src="img/playlist.png" alt="playlist" class="w-[20px] h-[20px]" />
+                                </div>
+                                <div>
+                                    <p class="text-[14px] font-medium text-neu900" x-text="playlist.name"></p>
+                                    <p class="text-[12px] font-medium text-[#ADB5AF]" x-text="`${playlist.song_count || 0} lagu`"></p>
                                 </div>
                             </div>
                             <div class="w-5 h-5 rounded-xl border-2 border-[#516ab1] flex items-center justify-center">
@@ -381,13 +434,19 @@
 
                         {{-- Tombol Aksi --}}
                         <div class="flex items-center gap-2 ml-2 flex-shrink-0">
-                            <button
+                            {{-- <button
                                 @click="
                         if ($store.modalStore.playlists.length === 0) {
                             $store.modalStore.openCreateModal = true;
                         } else {
                             $store.modalStore.open = true;
                         }"
+                                class="w-4 h-4 text-[#adb5af] hover:text-primary" title="Tambah ke playlist">
+                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                                </svg>
+                            </button> --}}
+                            <button @click="$store.modalStore.openModal(@js($song))"
                                 class="w-4 h-4 text-[#adb5af] hover:text-primary" title="Tambah ke playlist">
                                 <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />

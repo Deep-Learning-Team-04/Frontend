@@ -18,6 +18,60 @@
         <div class="w-full px-6 mx-auto max-w-7xl">
 
             <!-- Modal playlist tersimpan -->
+            {{-- <div x-cloak x-show="$store.modalStore.open"
+                class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                <div class="bg-[#f1f8fc] border-2 border-primary rounded-lg p-10 w-[400px]">
+                    <!-- Header dan Search -->
+                    <div class="flex items-center mb-6">
+                        <div class="relative w-full">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <img src="img/search.png" alt="search" class="w-4 h-4" />
+                            </div>
+                            <input type="text" placeholder="Cari Playlist"
+                                class="pl-10 pr-3 py-2 w-full rounded bg-white border-2 border-[#EBEDEC] placeholder:text-[#ADB5AF] focus:outline-none focus:ring-2 focus:ring-primary text-sm transition"
+                                x-model="$store.modalStore.searchQuery" />
+                        </div>
+                        <button @click="$store.modalStore.open = false; $store.modalStore.openCreateModal = true"
+                            class="ml-2 p-2 bg-white border border-primary rounded text-primary hover:bg-[#f1f8fc] text-xl leading-none">
+                            +
+                        </button>
+                    </div>
+
+                    <h2 class="text-[18px] font-medium text-[#8F9992] mb-0">Playlist tersimpan</h2>
+
+                    <!-- Daftar Playlist -->
+                    <template x-for="playlist in $store.modalStore.filteredPlaylists" :key="playlist.id">
+                        <div @click="$store.modalStore.selectPlaylist(playlist.id)"
+                            class="flex items-center justify-between p-2 rounded hover:bg-[#f1f8fc] cursor-pointer transition"
+                            :class="{ 'bg-[#e1f0ff]': $store.modalStore.isSelected(playlist.id) }">
+                            <div class="flex items-center gap-3">
+                                <div class="bg-[#D0E4F5] w-10 h-10 rounded flex items-center justify-center">
+                                    <img src="img/playlist.png" alt="playlist" class="w-[20px] h-[20px]" />
+                                </div>
+                                <div>
+                                    <p class="text-[14px] font-medium text-neu900" x-text="playlist.name"></p>
+                                    <p class="text-[12px] font-medium text-[#ADB5AF]"
+                                        x-text="`${playlist.song_count || 0} lagu`"></p>
+                                </div>
+                            </div>
+                            <div class="w-5 h-5 rounded-xl border-2 border-[#516ab1] flex items-center justify-center">
+                                <div class="w-2 h-2 rounded bg-primary"
+                                    x-show="$store.modalStore.isSelected(playlist.id)"></div>
+                            </div>
+                        </div>
+                    </template>
+
+                    <!-- Tombol Aksi -->
+                    <div class="flex justify-between mt-4">
+                        <x-secondary-button @click="$store.modalStore.resetModal()" class="w-[150px] h-[36px]">
+                            Kembali
+                        </x-secondary-button>
+                        <x-primary-button @click="$store.modalStore.saveSelection()" class="w-[150px] h-[36px]">
+                            Simpan
+                        </x-primary-button>
+                    </div>
+                </div>
+            </div> --}}
             <div x-cloak x-show="$store.modalStore.open"
                 class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                 <div class="bg-[#f1f8fc] border-2 border-primary rounded-lg p-10 w-[400px]">
@@ -90,18 +144,17 @@
                                 <img src="img/playlist.png" alt="playlist" class="w-[84px] h-[84px]" />
                             </div>
                             <div class="flex flex-col flex-1 gap-3">
-                                <input name="name" type="text" placeholder="Nama playlist"
-                                    value="{{ old('name') }}"
+                                <input name="name" type="text" placeholder="Nama playlist" value="{{ old('name') }}"
                                     class="p-2 rounded bg-[#EBEDEC] placeholder:text-[#ADB5AF] text-sm focus:outline-none focus:ring-2 focus:ring-primary transition"
                                     required />
                                 @error('name')
-                                    <span class="text-xs text-red-500">{{ $message }}</span>
+                                <span class="text-xs text-red-500">{{ $message }}</span>
                                 @enderror
 
                                 <textarea name="description" placeholder="Tambahkan deskripsi (opsional)"
                                     class="p-2 rounded bg-[#EBEDEC] placeholder:text-[#ADB5AF] text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none h-[100px] transition">{{ old('description') }}</textarea>
                                 @error('description')
-                                    <span class="text-xs text-red-500">{{ $message }}</span>
+                                <span class="text-xs text-red-500">{{ $message }}</span>
                                 @enderror
                             </div>
                         </div>
@@ -123,12 +176,12 @@
                 </div>
                 <h2 class="font-roboto text-[24px] font-semibold text-neu900 mt-4 text-center">
                     @if (!empty($criteria))
-                        Berdasarkan preferensi Anda
-                        <div class="mt-2 text-lg font-normal">
-                            <p>Mood: {{ ucfirst($criteria['mood'] ?? 'Not specified') }}</p>
-                            <p>Favorite Artists: {{ implode(', ', $criteria['favorite_artists'] ?? ['None']) }}</p>
-                            <p>Favorite Genres: {{ implode(', ', $criteria['favorite_genres'] ?? ['None']) }}</p>
-                        </div>
+                    Berdasarkan preferensi Anda
+                    <div class="mt-2 text-lg font-normal">
+                        <p>Mood: {{ ucfirst($criteria['mood'] ?? 'Not specified') }}</p>
+                        <p>Favorite Artists: {{ implode(', ', $criteria['favorite_artists'] ?? ['None']) }}</p>
+                        <p>Favorite Genres: {{ implode(', ', $criteria['favorite_genres'] ?? ['None']) }}</p>
+                    </div>
                     @endif
                 </h2>
             </div>
@@ -142,87 +195,81 @@
                 </div>
 
                 @forelse ($recommended_songs as $song)
-                    <div class="flex items-center bg-[#F1F8FC] rounded-md px-4 py-1 mb-3">
-                        <div class="flex items-center justify-center w-6 h-6 mr-3 rounded-md text-primary">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                    d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v9.114A4.369 4.369 0 005 14c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V7.82l8-1.6v5.894A4.369 4.369 0 0015 12c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V3z">
-                                </path>
-                            </svg>
+                <div class="flex items-center bg-[#F1F8FC] rounded-md px-4 py-1 mb-3">
+                    <div class="flex items-center justify-center w-6 h-6 mr-3 rounded-md text-primary">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v9.114A4.369 4.369 0 005 14c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V7.82l8-1.6v5.894A4.369 4.369 0 0015 12c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V3z">
+                            </path>
+                        </svg>
+                    </div>
+                    <div class="flex items-center flex-1 min-w-0 ml-3">
+                        <div class="w-1/4 min-w-0 mr-6">
+                            <p class="font-inter text-[16px] font-semibold text-neu900 truncate">
+                                {{ $song['song_name'] ?? 'Unknown Song' }}</p>
+                            <p class="font-inter text-[16px] font-medium text-neu900 truncate">
+                                {{ $song['artist_id'] ?? 'Unknown Artist' }}</p>
                         </div>
-                        <div class="flex items-center flex-1 min-w-0 ml-3">
-                            <div class="w-1/4 min-w-0 mr-6">
-                                <p class="font-inter text-[16px] font-semibold text-neu900 truncate">
-                                    {{ $song['song_name'] ?? 'Unknown Song' }}</p>
-                                <p class="font-inter text-[16px] font-medium text-neu900 truncate">
-                                    {{ $song['artist_id'] ?? 'Unknown Artist' }}</p>
-                            </div>
 
-                            <div class="flex items-center gap-1 bg-[#F1F8FC] rounded-md px-4 py-3 max-w-[600px] w-full">
-                                <!-- Audio Player -->
-                                <audio id="audio-{{ $song['id'] }}" src="{{ $song['file_url'] }}"></audio>
+                        <div class="flex items-center gap-1 bg-[#F1F8FC] rounded-md px-4 py-3 max-w-[600px] w-full">
+                            <!-- Audio Player -->
+                            <audio id="audio-{{ $song['id'] }}" src="{{ $song['file_url'] }}"></audio>
 
-                                <!-- Play/Pause Button -->
-                                <button onclick="togglePlay('{{ $song['id'] }}')"
-                                    class="relative flex items-center justify-center w-8 h-8 text-white rounded-full playPauseBtn bg-primary">
-                                    <svg id="play-icon-{{ $song['id'] }}" class="absolute inset-0 w-4 h-4 m-auto"
-                                        fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M8 5v14l11-7z" />
-                                    </svg>
-                                    <svg id="pause-icon-{{ $song['id'] }}"
-                                        class="absolute inset-0 hidden w-4 h-4 m-auto" fill="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-                                    </svg>
-                                </button>
+                            <!-- Play/Pause Button -->
+                            <button onclick="togglePlay('{{ $song['id'] }}')"
+                                class="relative flex items-center justify-center w-8 h-8 text-white rounded-full playPauseBtn bg-primary">
+                                <svg id="play-icon-{{ $song['id'] }}" class="absolute inset-0 w-4 h-4 m-auto"
+                                    fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z" />
+                                </svg>
+                                <svg id="pause-icon-{{ $song['id'] }}" class="absolute inset-0 hidden w-4 h-4 m-auto"
+                                    fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                                </svg>
+                            </button>
 
-                                <!-- Current Time -->
-                                <span id="current-time-{{ $song['id'] }}"
-                                    class="text-sm text-gray-600 min-w-[42px] text-center">0:00</span>
+                            <!-- Current Time -->
+                            <span id="current-time-{{ $song['id'] }}"
+                                class="text-sm text-gray-600 min-w-[42px] text-center">0:00</span>
 
-                                <!-- Progress Bar -->
-                                <input type="range" id="progress-{{ $song['id'] }}" value="0"
-                                    class="flex-1 h-1 max-w-[350px] bg-gray-300 rounded-lg appearance-none cursor-pointer">
+                            <!-- Progress Bar -->
+                            <input type="range" id="progress-{{ $song['id'] }}" value="0"
+                                class="flex-1 h-1 max-w-[350px] bg-gray-300 rounded-lg appearance-none cursor-pointer">
 
-                                <!-- Duration -->
-                                <span id="duration-{{ $song['id'] }}"
-                                    class="text-sm text-gray-600 min-w-[42px] text-center">0:00</span>
-                            </div>
+                            <!-- Duration -->
+                            <span id="duration-{{ $song['id'] }}"
+                                class="text-sm text-gray-600 min-w-[42px] text-center">0:00</span>
+                        </div>
 
-                            <div class="flex items-center max-w-[150px] w-full">
-                                <p class="font-inter text-[14px] font-medium text-[#3E4451] truncate pl-6">
-                                    {{ ucfirst($song['mood'] ?? 'Unknown') }}</p>
-                            </div>
-                            <div class="flex items-center gap-2 ml-auto">
-                                <!-- Tombol Add / Open Modal -->
-                                <button @click="
-                                if ($store.modalStore.playlists.length === 0) {
-                                    $store.modalStore.openCreateModal = true;
-                                } else {
-                                    $store.modalStore.open = true;
-                                }"
-                                    class="w-4 h-4 text-[#adb5af] hover:text-primary" title="Tambah ke playlist">
-                                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-                                    </svg>
-                                </button>
+                        <div class="flex items-center max-w-[150px] w-full">
+                            <p class="font-inter text-[14px] font-medium text-[#3E4451] truncate pl-6">
+                                {{ ucfirst($song['mood'] ?? 'Unknown') }}</p>
+                        </div>
+                        <div class="flex items-center gap-2 ml-auto">
+                            <!-- Tombol Add / Open Modal -->
+                            <button @click="$store.modalStore.openModal(@js($song))"
+                                class="w-4 h-4 text-[#adb5af] hover:text-primary" title="Tambah ke playlist">
+                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                                </svg>
+                            </button>
 
-                                <button @click="liked = !liked" :class="liked ? 'text-[#f83b3e]' : 'text-[#adb5af]'"
-                                    class="w-5 h-5 hover:text-[#f83b3e]" title="Favorite">
-                                    <svg :fill="liked ? '#f83b3e' : 'none'" stroke="currentColor" stroke-width="2"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                    </svg>
-                                </button>
-                            </div>
+                            <button @click="liked = !liked" :class="liked ? 'text-[#f83b3e]' : 'text-[#adb5af]'"
+                                class="w-5 h-5 hover:text-[#f83b3e]" title="Favorite">
+                                <svg :fill="liked ? '#f83b3e' : 'none'" stroke="currentColor" stroke-width="2"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                </svg>
+                            </button>
                         </div>
                     </div>
-                    
+                </div>
+
                 @empty
-                    <div class="py-10 text-center">
-                        <p class="text-lg text-gray-500">No recommendations found. Try adjusting your preferences.</p>
-                    </div>
+                <div class="py-10 text-center">
+                    <p class="text-lg text-gray-500">No recommendations found. Try adjusting your preferences.</p>
+                </div>
                 @endforelse
             </div>
         </div>

@@ -17,7 +17,7 @@
     }">
         <div class="w-full px-6 mx-auto max-w-7xl">
 
-             <!-- Modal Mood -->
+            <!-- Modal Mood -->
             <div x-data="{
                 {{--  openMood: true,
                 loading: false,
@@ -28,7 +28,7 @@
                     checkMoodInterval() {
                         const lastShown = localStorage.getItem('moodLastShown');
                         const now = new Date().getTime();
-            
+
                         if (!lastShown || now - lastShown > 3 * 60 * 60 * 1000) {
                             this.openMood = true;
                             localStorage.setItem('moodLastShown', now);
@@ -43,7 +43,7 @@
                     async fetchMood(mood) {
                         this.loading = true;
                         const apiMood = this.moodMap[mood] || 'happy';
-            
+
                         try {
                             const response = await fetch('/save-mood', {
                                 method: 'POST',
@@ -53,9 +53,9 @@
                                 },
                                 body: JSON.stringify({ mood: apiMood })
                             });
-            
+
                             const data = await response.json();
-            
+
                             if (data.success) {
                                 console.log('Berhasil menyimpan mood:', {
                                     mood: mood,
@@ -76,7 +76,7 @@
                             this.loading = false;
                         }
                     }
-            
+
             }" x-init="checkMoodInterval()" x-cloak x-show="openMood"
                 class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                 <div
@@ -94,8 +94,8 @@
                     <div class="flex justify-between px-6 mt-8 text-center">
                         <div>
                             <button @click="fetchMood('sedih')" title="Sedih">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="61"
-                                    viewBox="0 0 60 61" fill="none">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="61" viewBox="0 0 60 61"
+                                    fill="none">
                                     <mask id="mask0_923_1767" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
                                         y="0" width="80" height="80">
                                         <rect y="0.5" width="60" height="60" fill="#D9D9D9" />
@@ -111,8 +111,8 @@
                         </div>
                         <div>
                             <button @click="fetchMood('tenang')" title="Tenang">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="61"
-                                    viewBox="0 0 60 61" fill="none">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="61" viewBox="0 0 60 61"
+                                    fill="none">
                                     <mask id="mask0_923_1770" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
                                         y="0" width="60" height="61">
                                         <rect y="0.5" width="60" height="60" fill="#D9D9D9" />
@@ -128,8 +128,8 @@
                         </div>
                         <div>
                             <button @click="fetchMood('senang')" title="Senang">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="61"
-                                    viewBox="0 0 60 61" fill="none">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="61" viewBox="0 0 60 61"
+                                    fill="none">
                                     <mask id="mask0_923_1773" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
                                         y="0" width="60" height="61">
                                         <rect y="0.5" width="60" height="60" fill="#D9D9D9" />
@@ -145,8 +145,8 @@
                         </div>
                         <div>
                             <button @click="fetchMood('marah')" title="Marah">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="61"
-                                    viewBox="0 0 60 61" fill="none">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="61" viewBox="0 0 60 61"
+                                    fill="none">
                                     <mask id="mask0_923_1776" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
                                         y="0" width="60" height="61">
                                         <rect y="0.5" width="60" height="60" fill="#D9D9D9" />
@@ -240,18 +240,17 @@
                                 <img src="img/playlist.png" alt="playlist" class="w-[84px] h-[84px]" />
                             </div>
                             <div class="flex flex-col flex-1 gap-3">
-                                <input name="name" type="text" placeholder="Nama playlist"
-                                    value="{{ old('name') }}"
+                                <input name="name" type="text" placeholder="Nama playlist" value="{{ old('name') }}"
                                     class="p-2 rounded bg-[#EBEDEC] placeholder:text-[#ADB5AF] text-sm focus:outline-none focus:ring-2 focus:ring-primary transition"
                                     required />
                                 @error('name')
-                                    <span class="text-xs text-red-500">{{ $message }}</span>
+                                <span class="text-xs text-red-500">{{ $message }}</span>
                                 @enderror
 
                                 <textarea name="description" placeholder="Tambahkan deskripsi (opsional)"
                                     class="p-2 rounded bg-[#EBEDEC] placeholder:text-[#ADB5AF] text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none h-[100px] transition">{{ old('description') }}</textarea>
                                 @error('description')
-                                    <span class="text-xs text-red-500">{{ $message }}</span>
+                                <span class="text-xs text-red-500">{{ $message }}</span>
                                 @enderror
                             </div>
                         </div>
@@ -262,30 +261,83 @@
                         </div>
                 </form>
             </div>
-        </div>
-        </div>
+            <div x-cloak x-show="$store.modalStore.open"
+                class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                <div class="bg-[#f1f8fc] border-2 border-primary rounded-lg p-10 w-[400px]">
+                    <!-- Header dan Search -->
+                    <div class="flex items-center mb-6">
+                        <div class="relative w-full">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <img src="img/search.png" alt="search" class="w-4 h-4" />
+                            </div>
+                            <input type="text" placeholder="Cari Playlist"
+                                class="pl-10 pr-3 py-2 w-full rounded bg-white border-2 border-[#EBEDEC] placeholder:text-[#ADB5AF] focus:outline-none focus:ring-2 focus:ring-primary text-sm transition"
+                                x-model="$store.modalStore.searchQuery" />
+                        </div>
+                        <button @click="$store.modalStore.open = false; $store.modalStore.openCreateModal = true"
+                            class="ml-2 p-2 bg-white border border-primary rounded text-primary hover:bg-[#f1f8fc] text-xl leading-none">
+                            +
+                        </button>
+                    </div>
 
-        <!-- Konten Halaman  -->
-        <div class="flex gap-2">
-            <!-- sisi kiri -->
-            <div class="flex flex-col items-center w-1/3">
-                <div class="relative flex items-center justify-center bg-gray-200 rounded-lg shadow-md w-60 h-60">
-                    {{-- Gambar Artis --}}
-                    <img src="{{ $artist['image_url'] ?? 'https://placehold.co/240x240/D0E4F5/181B19?text=Artis' }}"
-                        alt="{{ $artist['name'] }}" class="object-cover w-full h-full rounded-lg"
-                        onerror="this.onerror=null;this.src='https://placehold.co/240x240/D0E4F5/181B19?text=Gagal+Muat';" />
-                    {{-- Tombol Like --}}
-                    {{-- <button @click="liked = !liked" :class="liked ? 'text-[#f83b3e]' : 'text-white'"
-                        class="absolute bottom-3 right-3 w-8 h-8 hover:text-[#f83b3e] transition-colors"
-                        title="Favorite">
-                        <svg fill="currentColor" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                        </svg>
-                    </button> --}}
-                    <button @click="toggleFavorite" :class="isFavorite ? 'text-[#f83b3e]' : 'text-white'"
-                        class="absolute bottom-3 right-3 w-8 h-8 hover:text-[#f83b3e] transition-colors"
-                        title="Favorite" x-data="{
+                    <h2 class="text-[18px] font-medium text-[#8F9992] mb-0">Playlist tersimpan</h2>
+
+                    <!-- Daftar Playlist -->
+                    <template x-for="playlist in $store.modalStore.filteredPlaylists" :key="playlist.id">
+                        <div @click="$store.modalStore.selectPlaylist(playlist.id)"
+                            class="flex items-center justify-between p-2 rounded hover:bg-[#f1f8fc] cursor-pointer transition"
+                            :class="{ 'bg-[#e1f0ff]': $store.modalStore.isSelected(playlist.id) }">
+                            <div class="flex items-center gap-3">
+                                <div class="bg-[#D0E4F5] w-10 h-10 rounded flex items-center justify-center">
+                                    <img src="img/playlist.png" alt="playlist" class="w-[20px] h-[20px]" />
+                                </div>
+                                <div>
+                                    <p class="text-[14px] font-medium text-neu900" x-text="playlist.name"></p>
+                                    <p class="text-[12px] font-medium text-[#ADB5AF]"
+                                        x-text="`${playlist.song_count || 0} lagu`"></p>
+                                </div>
+                            </div>
+                            <div class="w-5 h-5 rounded-xl border-2 border-[#516ab1] flex items-center justify-center">
+                                <div class="w-2 h-2 rounded bg-primary"
+                                    x-show="$store.modalStore.isSelected(playlist.id)"></div>
+                            </div>
+                        </div>
+                    </template>
+
+                    <!-- Tombol Aksi -->
+                    <div class="flex justify-between mt-4">
+                        <x-secondary-button @click="$store.modalStore.resetModal()" class="w-[150px] h-[36px]">
+                            Kembali
+                        </x-secondary-button>
+                        <x-primary-button @click="$store.modalStore.saveSelection()" class="w-[150px] h-[36px]">
+                            Simpan
+                        </x-primary-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Konten Halaman  -->
+    <div class="flex gap-2">
+        <!-- sisi kiri -->
+        <div class="flex flex-col items-center w-1/3">
+            <div class="relative flex items-center justify-center bg-gray-200 rounded-lg shadow-md w-60 h-60">
+                {{-- Gambar Artis --}}
+                <img src="{{ $artist['image_url'] ?? 'https://placehold.co/240x240/D0E4F5/181B19?text=Artis' }}"
+                    alt="{{ $artist['name'] }}" class="object-cover w-full h-full rounded-lg"
+                    onerror="this.onerror=null;this.src='https://placehold.co/240x240/D0E4F5/181B19?text=Gagal+Muat';" />
+                {{-- Tombol Like --}}
+                {{-- <button @click="liked = !liked" :class="liked ? 'text-[#f83b3e]' : 'text-white'"
+                    class="absolute bottom-3 right-3 w-8 h-8 hover:text-[#f83b3e] transition-colors" title="Favorite">
+                    <svg fill="currentColor" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                    </svg>
+                </button> --}}
+                <button @click="toggleFavorite" :class="isFavorite ? 'text-[#f83b3e]' : 'text-white'"
+                    class="absolute bottom-3 right-3 w-8 h-8 hover:text-[#f83b3e] transition-colors" title="Favorite"
+                    x-data="{
                             isFavorite: {{ collect($favoriteArtists)->contains('id', $artistId) ? 'true' : 'false' }},
                             artistId: '{{ $artistId }}',
                             toggleFavorite() {
@@ -312,104 +364,98 @@
                                     });
                             }
                         }">
-                        <svg fill="currentColor" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                        </svg>
-                    </button>
-                </div>
-                <h2 class="font-roboto text-[24px] font-semibold text-neu900">{{ $artist['name'] }}</h2>
-                <p class="mt-1 text-sm font-medium font-inter text-primary">
-                    {{ count($artist['songs']) }} lagu
-                </p>
+                    <svg fill="currentColor" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                    </svg>
+                </button>
+            </div>
+            <h2 class="font-roboto text-[24px] font-semibold text-neu900">{{ $artist['name'] }}</h2>
+            <p class="mt-1 text-sm font-medium font-inter text-primary">
+                {{ count($artist['songs']) }} lagu
+            </p>
+        </div>
+
+        <!-- sisi kanan -->
+        <div class="flex-1">
+            <div class="flex items-center px-20 py-4">
+                <div class="flex-1 font-inter text-[14px] font-medium text-neu900">Judul</div>
+                <div class="flex-[0.2] text-center font-inter text-[14px] font-medium text-neu900">Duration</div>
+                <div class="flex-[0.5] text-center font-inter text-[14px] font-medium text-neu900">Mood</div>
             </div>
 
-            <!-- sisi kanan -->
-            <div class="flex-1">
-                <div class="flex items-center px-20 py-4">
-                    <div class="flex-1 font-inter text-[14px] font-medium text-neu900">Judul</div>
-                    <div class="flex-[0.2] text-center font-inter text-[14px] font-medium text-neu900">Duration</div>
-                    <div class="flex-[0.5] text-center font-inter text-[14px] font-medium text-neu900">Mood</div>
-                </div>
+            @if (empty($artist['songs']))
+            <div class="py-8 text-center font-inter text-neu900">Tidak ada data lagu</div>
+            @else
+            @foreach ($artist['songs'] as $song)
+            <div class="flex items-center bg-[#F1F8FC] rounded-md px-4 py-1 mb-3">
+                <img class="object-cover w-12 h-12 rounded-md" src="{{ $artist['image_url'] }}" alt="Foto lagu" />
+                <div class="flex items-center flex-1 min-w-0 ml-3">
+                    <div class="w-1/4 min-w-0 mr-6">
+                        <p class="font-inter text-[16px] font-semibold text-neu900 truncate">
+                            {{ $song['song_name'] }}</p>
+                        <p class="font-inter text-[16px] font-medium text-neu900 truncate">
+                            {{ $artist['name'] }}</p>
+                    </div>
 
-                @if (empty($artist['songs']))
-                <div class="py-8 text-center font-inter text-neu900">Tidak ada data lagu</div>
-                @else
-                @foreach ($artist['songs'] as $song)
-                <div class="flex items-center bg-[#F1F8FC] rounded-md px-4 py-1 mb-3">
-                    <img class="object-cover w-12 h-12 rounded-md" src="{{ $artist['image_url'] }}" alt="Foto lagu" />
-                    <div class="flex items-center flex-1 min-w-0 ml-3">
-                        <div class="w-1/4 min-w-0 mr-6">
-                            <p class="font-inter text-[16px] font-semibold text-neu900 truncate">
-                                {{ $song['song_name'] }}</p>
-                            <p class="font-inter text-[16px] font-medium text-neu900 truncate">
-                                {{ $artist['name'] }}</p>
-                        </div>
+                    <div class="flex items-center gap-1 bg-[#F1F8FC] rounded-md px-4 py-3 max-w-[600px] w-full">
+                        <!-- Audio Player -->
+                        <audio id="audio-{{ $song['id'] }}" src="{{ $song['file_url'] }}"></audio>
 
-                        <div class="flex items-center gap-1 bg-[#F1F8FC] rounded-md px-4 py-3 max-w-[600px] w-full">
-                            <!-- Audio Player -->
-                            <audio id="audio-{{ $song['id'] }}" src="{{ $song['file_url'] }}"></audio>
+                        <!-- Play/Pause Button -->
+                        <button onclick="togglePlay('{{ $song['id'] }}')"
+                            class="relative flex items-center justify-center w-8 h-8 text-white rounded-full playPauseBtn bg-primary">
+                            <svg id="play-icon-{{ $song['id'] }}" class="absolute inset-0 w-4 h-4 m-auto"
+                                fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z" />
+                            </svg>
+                            <svg id="pause-icon-{{ $song['id'] }}" class="absolute inset-0 hidden w-4 h-4 m-auto"
+                                fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                            </svg>
+                        </button>
 
-                            <!-- Play/Pause Button -->
-                            <button onclick="togglePlay('{{ $song['id'] }}')"
-                                class="relative flex items-center justify-center w-8 h-8 text-white rounded-full playPauseBtn bg-primary">
-                                <svg id="play-icon-{{ $song['id'] }}" class="absolute inset-0 w-4 h-4 m-auto"
-                                    fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M8 5v14l11-7z" />
-                                </svg>
-                                <svg id="pause-icon-{{ $song['id'] }}" class="absolute inset-0 hidden w-4 h-4 m-auto"
-                                    fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-                                </svg>
-                            </button>
+                        <!-- Current Time -->
+                        <span id="current-time-{{ $song['id'] }}"
+                            class="text-sm text-gray-600 min-w-[42px] text-center">0:00</span>
 
-                            <!-- Current Time -->
-                            <span id="current-time-{{ $song['id'] }}"
-                                class="text-sm text-gray-600 min-w-[42px] text-center">0:00</span>
+                        <!-- Progress Bar -->
+                        <input type="range" id="progress-{{ $song['id'] }}" value="0"
+                            class="flex-1 h-1 max-w-[350px] bg-gray-300 rounded-lg appearance-none cursor-pointer">
 
-                            <!-- Progress Bar -->
-                            <input type="range" id="progress-{{ $song['id'] }}" value="0"
-                                class="flex-1 h-1 max-w-[350px] bg-gray-300 rounded-lg appearance-none cursor-pointer">
+                        <!-- Duration -->
+                        <span id="duration-{{ $song['id'] }}"
+                            class="text-sm text-gray-600 min-w-[42px] text-center">0:00</span>
+                    </div>
 
-                            <!-- Duration -->
-                            <span id="duration-{{ $song['id'] }}"
-                                class="text-sm text-gray-600 min-w-[42px] text-center">0:00</span>
-                        </div>
+                    <div class="flex items-center max-w-[150px] w-full">
+                        <p class="font-inter text-[14px] font-medium text-[#3E4451] truncate pl-4">
+                            {{ $song['mood'] }}</p>
+                    </div>
+                    <div class="flex items-center gap-2 ml-auto">
+                        <!-- Tombol Add / Open Modal -->
+                        <button @click="$store.modalStore.openModal(@js($song))"
+                            class="w-4 h-4 text-[#adb5af] hover:text-primary" title="Tambah ke playlist">
+                            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                            </svg>
+                        </button>
 
-                                <div class="flex items-center max-w-[150px] w-full">
-                                    <p class="font-inter text-[14px] font-medium text-[#3E4451] truncate pl-4">
-                                        {{ $song['mood'] }}</p>
-                                </div>
-                                <div class="flex items-center gap-2 ml-auto">
-                                    <!-- Tombol Add / Open Modal -->
-                                    <button
-                                @click="
-                        if ($store.modalStore.playlists.length === 0) {
-                            $store.modalStore.openCreateModal = true;
-                        } else {
-                            $store.modalStore.open = true;
-                        }"
-                                class="w-4 h-4 text-[#adb5af] hover:text-primary" title="Tambah ke playlist">
-                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-                                </svg>
-                            </button>
-
-                            <button @click="liked = !liked" :class="liked ? 'text-[#f83b3e]' : 'text-[#adb5af]'"
-                                class="w-5 h-5 hover:text-[#f83b3e]" title="Favorite">
-                                <svg :fill="liked ? '#f83b3e' : 'none'" stroke="currentColor" stroke-width="2"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                </svg>
-                            </button>
-                        </div>
+                        <button @click="liked = !liked" :class="liked ? 'text-[#f83b3e]' : 'text-[#adb5af]'"
+                            class="w-5 h-5 hover:text-[#f83b3e]" title="Favorite">
+                            <svg :fill="liked ? '#f83b3e' : 'none'" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                        </button>
                     </div>
                 </div>
-                @endforeach
+            </div>
+            @endforeach
 
-                <script>
-                    // Fungsi untuk toggle play/pause
+            <script>
+                // Fungsi untuk toggle play/pause
                         function togglePlay(songId) {
                             const audio = document.getElementById(`audio-${songId}`);
                             const playIcon = document.getElementById(`play-icon-${songId}`);
@@ -457,10 +503,10 @@
                             const secs = Math.floor(seconds % 60);
                             return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
                         }
-                </script>
-                @endif
-            </div>
+            </script>
+            @endif
         </div>
+    </div>
     </div>
 
     <script>
@@ -518,7 +564,7 @@
                     return this.selectedPlaylistId === playlistId;
                 },
 
-                // Simpan seleksi ke API
+               // Simpan seleksi ke API
                 async saveSelection() {
                     // Validasi
                     if (!this.selectedPlaylistId || !this.currentSong?.id) {
