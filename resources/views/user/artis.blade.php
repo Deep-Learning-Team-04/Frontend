@@ -300,7 +300,7 @@
                                 </div>
 
                                 <div class="flex items-center max-w-[150px] w-full">
-                                    <p class="font-inter text-[14px] font-medium text-[#3E4451] truncate">
+                                    <p class="font-inter text-[14px] font-medium text-[#3E4451] truncate pl-4">
                                         {{ $song['mood'] }}</p>
                                 </div>
                                 <div class="flex items-center gap-2 ml-auto">
@@ -385,71 +385,13 @@
         </div>
     </div>
 
-    <script src="https://unpkg.com/wavesurfer.js">
-        // Optional: Global Wavesurfer configuration
+    <script>
         document.addEventListener('alpine:init', () => {
             Alpine.data('audioPlayer', () => ({
                 // Configuration can be added here if needed
             }));
         });
 
-        {{--  <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const wavesurfer = WaveSurfer.create({
-                container: '#wave', // container utama waveform
-                waveColor: '#e5f1fa',
-                progressColor: '#7b9cd9',
-                height: 24
-            });
-
-            wavesurfer.load("/audio/komang.mp3");
-
-            const playButtons = document.querySelectorAll(".playPauseBtn");
-
-            // Ambil semua ikon play/pause dari kedua tombol
-            const playIcons = document.querySelectorAll(".playPauseBtn .play-icon");
-            const pauseIcons = document.querySelectorAll(".playPauseBtn .pause-icon");
-
-            const currentTimeEl = document.querySelector("#current");
-            const durationEl = document.querySelector("#duration");
-
-            // Tambahkan event listener ke semua tombol
-            playButtons.forEach(button => {
-                button.addEventListener("click", () => {
-                    wavesurfer.playPause();
-                });
-            });
-
-            wavesurfer.on("ready", () => {
-                durationEl.textContent = formatTime(wavesurfer.getDuration());
-            });
-
-            wavesurfer.on("audioprocess", () => {
-                currentTimeEl.textContent = formatTime(wavesurfer.getCurrentTime());
-            });
-
-            wavesurfer.on("play", () => {
-                playIcons.forEach(icon => icon.classList.add("hidden"));
-                pauseIcons.forEach(icon => icon.classList.remove("hidden"));
-            });
-
-            wavesurfer.on("pause", () => {
-                playIcons.forEach(icon => icon.classList.remove("hidden"));
-                pauseIcons.forEach(icon => icon.classList.add("hidden"));
-            });
-
-            wavesurfer.on("finish", () => {
-                playIcons.forEach(icon => icon.classList.remove("hidden"));
-                pauseIcons.forEach(icon => icon.classList.add("hidden"));
-                currentTimeEl.textContent = "0:00";
-            });
-
-            function formatTime(seconds) {
-                const minutes = Math.floor(seconds / 60);
-                const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
-                return `${minutes}:${secs}`;
-            }
-        });  --}}
         document.addEventListener('alpine:init', () => {
             Alpine.store('modalStore', {
                 open: false,

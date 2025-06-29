@@ -286,7 +286,7 @@
                 </div>
             </div>
         </section>
-        
+
 
         <!-- Artis -->
         <section class="mt-10">
@@ -322,71 +322,82 @@
 
         <!-- Audio Player -->
         <section class="mt-10">
-            <div class="flex items-center px-20 py-2 text-sm font-semibold text-gray-700">
-                <div class="flex-1 font-inter text-[14px] font-medium text-neu900">Judul</div>
-                <div class="flex-[0.1] text-center font-inter text-[14px] font-medium text-neu900">Duration</div>
-                <div class="flex-[0.5] text-center font-inter text-[14px] font-medium text-neu900">Mood</div>
+            {{-- Header Baris --}}
+            <div class="flex items-center px-6 py-2 text-sm font-semibold text-gray-700">
+                <div class="w-[800px] font-inter text-[14px] font-medium text-neu900">Judul</div>
+                <div class="w-[100px] text-center font-inter text-[14px] font-medium text-neu900">Duration</div>
+                <div class="w-[100px] text-center font-inter text-[14px] font-medium text-neu900">Mood</div>
             </div>
 
             @foreach ($songs as $index => $song)
-                <div class="flex items-center bg-[#F1F8FC] rounded-md px-4 py-1 mb-3">
+                <div class="flex items-center bg-[#F1F8FC] rounded-md px-6 py-3 mb-3">
+                    {{-- Cover Image --}}
                     <img class="w-12 h-12 rounded-md object-cover"
                         src="{{ $song['artist_image'] ?? 'https://placehold.co/48x48' }}" alt="Cover" />
 
-                    <div class="ml-3 flex-1 min-w-0 flex items-center">
-                        <div class="min-w-0 max-w-[180px] mr-20">
+                    {{-- Info & Player --}}
+                    <div class="ml-4 flex flex-1 items-center gap-4 min-w-0">
+                        {{-- Judul + Artis --}}
+                        <div class="w-[300px] min-w-0">
                             <p class="font-inter text-[16px] font-semibold text-neu900 truncate">
                                 {{ $song['song_name'] ?? 'Judul Lagu' }}
                             </p>
                             <p class="font-inter text-[16px] font-medium text-neu900 truncate">
                                 {{ $song['artist_name'] ?? 'Artis' }}
                             </p>
-
                         </div>
 
-                        <div class="flex items-center gap-1 bg-[#F1F8FC] rounded-md px-4 py-3 max-w-[600px] w-full">
-                            <!-- Tombol Play/Pause -->
-                            <div class="flex items-center gap-2">
-                                <button id="playPause"
-                                    class="relative w-8 h-8 bg-primary rounded-full text-white flex items-center justify-center">
-                                    <!-- Ikon Play -->
-                                    <svg class="play-icon absolute inset-0 m-auto w-4 h-4" fill="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path d="M8 5v14l11-7z" />
-                                    </svg>
-                                    <!-- Ikon Pause -->
-                                    <svg class="pause-icon absolute inset-0 m-auto w-10 h-10 hidden"
-                                        fill="currentColor" viewBox="0 0 32 24">
-                                        <path d="M10 9h2v6h-2zM14 9h2v6h-2z" />
-                                    </svg>
-                                </button>
-                                <span id="current"
-                                    class="text-sm text-gray-600 min-w-[42px] text-center">0:00</span>
-                            </div>
+                        {{-- Audio Player Full Width --}}
+                        <div class="flex items-center gap-2 flex-1 min-w-0">
+                            <audio id="audio-{{ $song['id'] }}" src="{{ $song['file_url'] }}"></audio>
 
-                            <!-- Visualisasi -->
-                            <div id="wave" class="flex-1 h-[24px] max-w-[350px] overflow-hidden rounded"></div>
+                            {{-- Tombol Play/Pause --}}
+                            <button onclick="togglePlay('{{ $song['id'] }}')"
+                                class="relative w-8 h-8 bg-primary rounded-full text-white flex items-center justify-center flex-shrink-0">
+                                <svg id="play-icon-{{ $song['id'] }}" class="absolute inset-0 m-auto w-4 h-4"
+                                    fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z" />
+                                </svg>
+                                <svg id="pause-icon-{{ $song['id'] }}"
+                                    class="absolute inset-0 m-auto w-4 h-4 hidden" fill="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                                </svg>
+                            </button>
 
-                            <!-- Durasi -->
-                            <span id="duration" class="text-sm text-gray-600 min-w-[42px] text-center">0:00</span>
+                            {{-- Time & Progress Bar --}}
+                            <span id="current-time-{{ $song['id'] }}"
+                                class="text-xs text-gray-600 w-[40px] text-center flex-shrink-0">0:00</span>
+
+                            <input type="range" id="progress-{{ $song['id'] }}" value="0"
+                                class="h-1 w-full bg-gray-300 rounded-lg appearance-none cursor-pointer">
+
+                            <span id="duration-{{ $song['id'] }}"
+                                class="text-xs text-gray-600 w-[40px] text-center flex-shrink-0">0:00</span>
                         </div>
-                        <div class="flex items-center max-w-[150px] w-full">
+
+                        {{-- Mood --}}
+                        <div class="w-[100px] text-center flex-shrink-0">
                             <p class="font-inter text-[14px] font-medium text-[#3E4451] truncate">
-                                {{ $song['mood'] ?? 'mood' }}
+                                {{ $song['mood'] ?? 'Mood' }}
                             </p>
                         </div>
-                        <div class="flex items-center gap-2 ml-auto">
-                            <!-- Tombol Add / Open Modal -->
+
+                        {{-- Tombol Aksi --}}
+                        <div class="flex items-center gap-2 ml-2 flex-shrink-0">
                             <button
                                 @click="
-                                if ($store.modalStore.playlists.length === 0) {
-                                    $store.modalStore.openCreateModal = true;
-                                } else {$store.modalStore.open = true;}"
+                        if ($store.modalStore.playlists.length === 0) {
+                            $store.modalStore.openCreateModal = true;
+                        } else {
+                            $store.modalStore.open = true;
+                        }"
                                 class="w-4 h-4 text-[#adb5af] hover:text-primary" title="Tambah ke playlist">
                                 <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
                                 </svg>
                             </button>
+
                             <button @click="liked = !liked" :class="liked ? 'text-[#f83b3e]' : 'text-[#adb5af]'"
                                 class="w-5 h-5 hover:text-[#f83b3e]" title="Favorite">
                                 <svg :fill="liked ? '#f83b3e' : 'none'" stroke="currentColor" stroke-width="2"
@@ -399,87 +410,86 @@
                     </div>
                 </div>
             @endforeach
+
+            <script>
+                function togglePlay(songId) {
+                    const audio = document.getElementById(`audio-${songId}`);
+                    const playIcon = document.getElementById(`play-icon-${songId}`);
+                    const pauseIcon = document.getElementById(`pause-icon-${songId}`);
+
+                    // Pause semua audio lain
+                    document.querySelectorAll('audio').forEach(aud => {
+                        if (aud.id !== `audio-${songId}`) {
+                            aud.pause();
+                            const otherId = aud.id.split('-')[1];
+                            document.getElementById(`play-icon-${otherId}`).classList.remove('hidden');
+                            document.getElementById(`pause-icon-${otherId}`).classList.add('hidden');
+                        }
+                    });
+
+                    if (audio.paused) {
+                        audio.play();
+                        playIcon.classList.add('hidden');
+                        pauseIcon.classList.remove('hidden');
+
+                        // Kirim request ke endpoint "songs/play"
+                        fetch('/songs/play', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                },
+                                body: JSON.stringify({
+                                    song_id: songId
+                                })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log('Berhasil mengirim data:', data);
+                            })
+                            .catch(error => {
+                                console.error('Gagal mengirim data:', error);
+                            });
+
+                    } else {
+                        audio.pause();
+                        playIcon.classList.remove('hidden');
+                        pauseIcon.classList.add('hidden');
+                    }
+                }
+
+                document.querySelectorAll('audio').forEach(audio => {
+                    const songId = audio.id.split('-')[1];
+                    const progress = document.getElementById(`progress-${songId}`);
+                    const currentTime = document.getElementById(`current-time-${songId}`);
+                    const duration = document.getElementById(`duration-${songId}`);
+
+                    audio.addEventListener('loadedmetadata', () => {
+                        duration.textContent = formatTime(audio.duration);
+                    });
+
+                    audio.addEventListener('timeupdate', () => {
+                        progress.value = (audio.currentTime / audio.duration) * 100;
+                        currentTime.textContent = formatTime(audio.currentTime);
+                    });
+
+                    progress.addEventListener('input', () => {
+                        const seekTime = (progress.value / 100) * audio.duration;
+                        audio.currentTime = seekTime;
+                    });
+                });
+
+                function formatTime(seconds) {
+                    const minutes = Math.floor(seconds / 60);
+                    const secs = Math.floor(seconds % 60);
+                    return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+                }
+            </script>
         </section>
     </div>
 
     <script src="https://unpkg.com/wavesurfer.js"></script>
     <script>
-        {{--  function fetchMood(mood) {
-            const root = document.querySelector('[x-data]');
-            const alpine = Alpine.$data(root);
-            alpine.loading = true;
-            alpine.result = null;
-
-            fetch(`/lagu-mood?mood=${mood}`)
-                .then(res => res.json())
-                .then(data => {
-                    alpine.result = Array.isArray(data.message) ? data.message : (data.message ||
-                        'Tidak ada lagu ditemukan.');
-                    alpine.open = false;
-                })
-                .catch(() => {
-                    alpine.result = 'Terjadi kesalahan saat mengambil data.';
-                    alpine.open = false;
-                })
-                .finally(() => {
-                    alpine.loading = false;
-                });
-        }  --}}
-        {{--  window.fetchMood = fetchMood;  --}}
-
-        document.addEventListener("DOMContentLoaded", () => {
-            const wavesurfer = WaveSurfer.create({
-                container: '#wave',
-                waveColor: '#e5f1fa',
-                progressColor: '#7b9cd9',
-                height: 24
-            });
-
-            wavesurfer.load("/audio/komang.mp3");
-
-            const playButton = document.querySelector("#playPause");
-            const playIcon = playButton.querySelector(".play-icon");
-            const pauseIcon = playButton.querySelector(".pause-icon");
-            const currentTimeEl = document.querySelector("#current");
-            const durationEl = document.querySelector("#duration");
-
-            pauseIcon.classList.add("hidden");
-
-            playButton.addEventListener("click", () => {
-                wavesurfer.playPause();
-            });
-
-            wavesurfer.on("ready", () => {
-                durationEl.textContent = formatTime(wavesurfer.getDuration());
-            });
-
-            wavesurfer.on("audioprocess", () => {
-                currentTimeEl.textContent = formatTime(wavesurfer.getCurrentTime());
-            });
-
-            wavesurfer.on("play", () => {
-                playIcon.classList.add("hidden");
-                pauseIcon.classList.remove("hidden");
-            });
-
-            wavesurfer.on("pause", () => {
-                playIcon.classList.remove("hidden");
-                pauseIcon.classList.add("hidden");
-            });
-
-            wavesurfer.on("finish", () => {
-                playIcon.classList.remove("hidden");
-                pauseIcon.classList.add("hidden");
-                currentTimeEl.textContent = "0:00";
-            });
-
-            function formatTime(seconds) {
-                const minutes = Math.floor(seconds / 60);
-                const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
-                return `${minutes}:${secs}`;
-            }
-        });
-
         document.addEventListener('alpine:init', () => {
             Alpine.store('modalStore', {
                 open: false,

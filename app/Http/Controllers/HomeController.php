@@ -102,4 +102,10 @@ class HomeController extends Controller
             ], 500);
         }
     }
+
+    public function play(Request $request)
+    {
+        $songId = $request->input('song_id');
+        return response()->json(['message' => 'Lagu sedang diputar', 'song_id' => $songId]);
+    }
 }

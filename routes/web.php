@@ -67,6 +67,7 @@ Route::get('/favorite', function () {
 // Route::get('/recommendations', [HomeController::class, 'getRecommendations'])->name('recommendations');
 Route::get('/home', [HomeController::class, 'index'])->name('user.home');
 Route::post('/save-mood', [HomeController::class, 'saveMood'])->name('save.mood');
+Route::post('/songs/play', [HomeController::class, 'play']);
 
 Route::get('/artists/{id}', [ArtisController::class, 'show'])->name('artis');
 Route::post('/artists/{artist}/toggle-favorite', [ArtisController::class, 'toggleFavorite'])->name('artists.toggle-favorite');
