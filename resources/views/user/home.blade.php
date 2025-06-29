@@ -5,7 +5,7 @@
         }
     </style>
 
-    <div class="w-full max-w-7xl px-6 mx-auto" x-data="{
+    <div class="w-full px-6 mx-auto max-w-7xl" x-data="{
         openMood: true,
         mood: '',
         loading: false,
@@ -17,7 +17,7 @@
         playlists: ['Calm', 'Focus']
     }">
 
-        <div class="w-full max-w-7xl px-6 mx-auto">
+        <div class="w-full px-6 mx-auto max-w-7xl">
             <!-- Modal Mood -->
             <div x-data="{
                 {{--  openMood: true,
@@ -29,7 +29,7 @@
                     checkMoodInterval() {
                         const lastShown = localStorage.getItem('moodLastShown');
                         const now = new Date().getTime();
-            
+
                         if (!lastShown || now - lastShown > 3 * 60 * 60 * 1000) {
                             this.openMood = true;
                             localStorage.setItem('moodLastShown', now);
@@ -44,7 +44,7 @@
                     async fetchMood(mood) {
                         this.loading = true;
                         const apiMood = this.moodMap[mood] || 'happy';
-            
+
                         try {
                             const response = await fetch('/save-mood', {
                                 method: 'POST',
@@ -54,9 +54,9 @@
                                 },
                                 body: JSON.stringify({ mood: apiMood })
                             });
-            
+
                             const data = await response.json();
-            
+
                             if (data.success) {
                                 console.log('Berhasil menyimpan mood:', {
                                     mood: mood,
@@ -77,13 +77,13 @@
                             this.loading = false;
                         }
                     }
-            
+
             }" x-init="checkMoodInterval()" x-cloak x-show="openMood"
-                class="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
+                class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                 <div
                     class="bg-[#f1f8fc] border-2 border-primary p-10 rounded-md shadow-lg w-full max-w-xl text-center relative">
                     <button @click="openMood = false"
-                        class="absolute top-2 right-3 text-neu900 hover:text-neu900 text-xl bg-gray-200 rounded-full w-6 h-6 flex items-center justify-center hover:bg-gray-300">
+                        class="absolute flex items-center justify-center w-6 h-6 text-xl bg-gray-200 rounded-full top-2 right-3 text-neu900 hover:text-neu900 hover:bg-gray-300">
                         &times;
                     </button>
                     <h2 class="font-inter text-[24px] font-semibold text-neu900">
@@ -92,11 +92,11 @@
                     <p class="font-inter text-[18px] text-gray-400 mb-4">
                         Beri tahu kami mood kamu, dan kami akan memutar musik yang cocok!
                     </p>
-                    <div class="flex justify-between px-6 text-center mt-8">
+                    <div class="flex justify-between px-6 mt-8 text-center">
                         <div>
                             <button @click="fetchMood('sedih')" title="Sedih">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="61"
-                                    viewBox="0 0 60 61" fill="none">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="61" viewBox="0 0 60 61"
+                                    fill="none">
                                     <mask id="mask0_923_1767" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
                                         y="0" width="80" height="80">
                                         <rect y="0.5" width="60" height="60" fill="#D9D9D9" />
@@ -112,8 +112,8 @@
                         </div>
                         <div>
                             <button @click="fetchMood('tenang')" title="Tenang">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="61"
-                                    viewBox="0 0 60 61" fill="none">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="61" viewBox="0 0 60 61"
+                                    fill="none">
                                     <mask id="mask0_923_1770" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
                                         y="0" width="60" height="61">
                                         <rect y="0.5" width="60" height="60" fill="#D9D9D9" />
@@ -129,8 +129,8 @@
                         </div>
                         <div>
                             <button @click="fetchMood('senang')" title="Senang">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="61"
-                                    viewBox="0 0 60 61" fill="none">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="61" viewBox="0 0 60 61"
+                                    fill="none">
                                     <mask id="mask0_923_1773" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
                                         y="0" width="60" height="61">
                                         <rect y="0.5" width="60" height="60" fill="#D9D9D9" />
@@ -146,8 +146,8 @@
                         </div>
                         <div>
                             <button @click="fetchMood('marah')" title="Marah">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="61"
-                                    viewBox="0 0 60 61" fill="none">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="61" viewBox="0 0 60 61"
+                                    fill="none">
                                     <mask id="mask0_923_1776" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
                                         y="0" width="60" height="61">
                                         <rect y="0.5" width="60" height="60" fill="#D9D9D9" />
@@ -163,18 +163,18 @@
                         </div>
                     </div>
                     <template x-if="loading">
-                        <p class="mt-4 text-primary text-sm">Mengambil lagu berdasarkan mood...</p>
+                        <p class="mt-4 text-sm text-primary">Mengambil lagu berdasarkan mood...</p>
                     </template>
                 </div>
             </div>
 
             <!-- Modal playlist tersimpan -->
-            <div x-cloak x-show="$store.modalStore.open"
-                class="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
+            {{-- <div x-cloak x-show="$store.modalStore.open"
+                class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                 <div class="bg-[#f1f8fc] border-2 border-primary rounded-lg p-10 w-[400px]">
                     <div class="flex items-center mb-6">
                         <div class="relative w-full">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                 <img src="img/search.png" alt="search" class="w-4 h-4" />
                             </div>
                             <input type="text" placeholder="Cari Playlist"
@@ -203,7 +203,7 @@
                                 </div>
                             </div>
                             <div class="w-5 h-5 rounded-xl border-2 border-[#516ab1] flex items-center justify-center">
-                                <div class="w-2 h-2 bg-primary rounded"
+                                <div class="w-2 h-2 rounded bg-primary"
                                     x-show="$store.modalStore.selected.includes(playlist)"></div>
                             </div>
                         </div>
@@ -218,105 +218,149 @@
                         </x-primary-button>
                     </div>
                 </div>
-            </div>
-
-            <!-- Modal Tambah Playlist -->
-            <div x-cloak x-show="$store.modalStore.openCreateModal"
+            </div> --}}
+            <div x-cloak x-show="$store.modalStore.open"
                 class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                <div
-                    class="bg-[#f1f8fc] border-2 border-primary rounded-md shadow-lg p-10 relative w-[600px] h-[320px]">
-                    <button @click="$store.modalStore.openCreateModal = false"
-                        class="absolute top-2 right-3 text-neu900 hover:text-neu900 text-xl bg-gray-200 rounded-full w-6 h-6 flex items-center justify-center hover:bg-gray-300">
-                        &times;
-                    </button>
-                    <h2 class="text-[18px] font-medium text-[#8F9992] mb-4">Tambah Playlist</h2>
-                    <div class="flex gap-2">
-                        <div class="bg-[#D0E4F5] w-[144px] h-[144px] rounded flex items-center justify-center">
-                            <img src="img/playlist.png" alt="playlist" class="w-[84px] h-[84px]" />
+                <div class="bg-[#f1f8fc] border-2 border-primary rounded-lg p-10 w-[400px]">
+                    <!-- Header dan Search -->
+                    <div class="flex items-center mb-6">
+                        <div class="relative w-full">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <img src="img/search.png" alt="search" class="w-4 h-4" />
+                            </div>
+                            <input type="text" placeholder="Cari Playlist"
+                                class="pl-10 pr-3 py-2 w-full rounded bg-white border-2 border-[#EBEDEC] placeholder:text-[#ADB5AF] focus:outline-none focus:ring-2 focus:ring-primary text-sm transition"
+                                x-model="$store.modalStore.searchQuery" />
                         </div>
-                        <div class="flex flex-col flex-1 gap-3">
-                            <input type="text" placeholder="Nama playlist"
-                                class="p-2 rounded bg-[#EBEDEC] placeholder:text-[#ADB5AF] text-sm focus:outline-none focus:ring-2 focus:ring-primary transition" />
-                            <textarea placeholder="Tambahkan deskripsi (opsional)"
-                                class="p-2 rounded bg-[#EBEDEC] placeholder:text-[#ADB5AF] text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none h-[100px] transition"></textarea>
-                        </div>
+                        <button @click="$store.modalStore.open = false; $store.modalStore.openCreateModal = true"
+                            class="ml-2 p-2 bg-white border border-primary rounded text-primary hover:bg-[#f1f8fc] text-xl leading-none">
+                            +
+                        </button>
                     </div>
-                    <div class="flex justify-end mt-2">
-                        <x-primary-button class="w-[150px] h-[36px] mt-4">
+
+                    <h2 class="text-[18px] font-medium text-[#8F9992] mb-0">Playlist tersimpan</h2>
+
+                    <!-- Daftar Playlist -->
+                    <template x-for="playlist in $store.modalStore.filteredPlaylists" :key="playlist.id">
+                        <div @click="$store.modalStore.selectPlaylist(playlist.id)"
+                            class="flex items-center justify-between p-2 rounded hover:bg-[#f1f8fc] cursor-pointer transition"
+                            :class="{ 'bg-[#e1f0ff]': $store.modalStore.isSelected(playlist.id) }">
+                            <div class="flex items-center gap-3">
+                                <div class="bg-[#D0E4F5] w-10 h-10 rounded flex items-center justify-center">
+                                    <img src="img/playlist.png" alt="playlist" class="w-[20px] h-[20px]" />
+                                </div>
+                                <div>
+                                    <p class="text-[14px] font-medium text-neu900" x-text="playlist.name"></p>
+                                    <p class="text-[12px] font-medium text-[#ADB5AF]"
+                                        x-text="`${playlist.song_count || 0} lagu`"></p>
+                                </div>
+                            </div>
+                            <div class="w-5 h-5 rounded-xl border-2 border-[#516ab1] flex items-center justify-center">
+                                <div class="w-2 h-2 rounded bg-primary"
+                                    x-show="$store.modalStore.isSelected(playlist.id)"></div>
+                            </div>
+                        </div>
+                    </template>
+
+                    <!-- Tombol Aksi -->
+                    <div class="flex justify-between mt-4">
+                        <x-secondary-button @click="$store.modalStore.resetModal()" class="w-[150px] h-[36px]">
+                            Kembali
+                        </x-secondary-button>
+                        <x-primary-button @click="$store.modalStore.saveSelection()" class="w-[150px] h-[36px]">
                             Simpan
                         </x-primary-button>
                     </div>
                 </div>
             </div>
+
+            <!-- Modal Tambah Playlist -->
+            <div x-cloak x-show="$store.modalStore.openCreateModal"
+                class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                <form method="POST" action="{{ route('playlist.store') }}">
+                    <div
+                        class="bg-[#f1f8fc] border-2 border-primary rounded-md shadow-lg p-10 relative w-[600px] h-[320px]">
+                        @csrf
+                        <button @click="$store.modalStore.openCreateModal = false"
+                            class="absolute flex items-center justify-center w-6 h-6 text-xl bg-gray-200 rounded-full top-2 right-3 text-neu900 hover:text-neu900 hover:bg-gray-300">
+                            &times;
+                        </button>
+                        <h2 class="text-[18px] font-medium text-[#8F9992] mb-4">Tambah Playlist</h2>
+                        <div class="flex gap-2">
+                            <div class="bg-[#D0E4F5] w-[144px] h-[144px] rounded flex items-center justify-center">
+                                <img src="img/playlist.png" alt="playlist" class="w-[84px] h-[84px]" />
+                            </div>
+                            <div class="flex flex-col flex-1 gap-3">
+                                <input name="name" type="text" placeholder="Nama playlist" value="{{ old('name') }}"
+                                    class="p-2 rounded bg-[#EBEDEC] placeholder:text-[#ADB5AF] text-sm focus:outline-none focus:ring-2 focus:ring-primary transition"
+                                    required />
+                                @error('name')
+                                <span class="text-xs text-red-500">{{ $message }}</span>
+                                @enderror
+
+                                <textarea name="description" placeholder="Tambahkan deskripsi (opsional)"
+                                    class="p-2 rounded bg-[#EBEDEC] placeholder:text-[#ADB5AF] text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none h-[100px] transition">{{ old('description') }}</textarea>
+                                @error('description')
+                                <span class="text-xs text-red-500">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="flex justify-end mt-2">
+                            <x-primary-button class="w-[150px] h-[36px] mt-4">
+                                Simpan
+                            </x-primary-button>
+                        </div>
+                </form>
+            </div>
         </div>
 
         <!-- Playlist -->
         <section class="mt-6">
-            <h1 class="font-roboto text-3xl font-semibold text-primary mb-4">Rekomendasi Playlist</h1>
-            <div class="flex gap-4 overflow-x-auto pb-2">
-                <div
-                    class="min-w-[180px] bg-[#D0E4F5] rounded-md overflow-hidden shadow-sm hover:shadow-md transition duration-200">
-                    <div class="h-40 bg-blue-200 flex items-center justify-center">
+            <h1 class="mb-4 text-3xl font-semibold font-roboto text-primary">Rekomendasi Playlist</h1>
+            <div class="flex gap-4 pb-2 overflow-x-auto">
+                <a href="{{ route('user.rekomendasiplaylist') }}"
+                    class="min-w-[180px] bg-[#D0E4F5] rounded-md overflow-hidden shadow-sm hover:shadow-md transition duration-200 cursor-pointer">
+                    <div class="flex items-center justify-center h-40 bg-blue-200">
                         <img src="img/playlist.png" alt="playlist" class="w-20 h-20" />
                     </div>
                     <div class="p-3 bg-[#F1F8FC]">
                         <p class="font-inter text-[16px] font-medium text-[#181B19]">Stecu Stecu</p>
                         <p class="font-inter text-[14px] font-normal text-[#6e7971]">Faris Adam</p>
                     </div>
-                </div>
-                <div
-                    class="min-w-[180px] bg-[#D0E4F5] rounded-md overflow-hidden shadow-sm hover:shadow-md transition duration-200">
-                    <div class="h-40 bg-blue-200 flex items-center justify-center">
-                        <img src="img/playlist.png" alt="playlist" class="w-20 h-20" />
-                    </div>
-                    <div class="p-3 bg-[#F1F8FC]">
-                        <p class="font-inter text-[16px] font-medium text-[#181B19]">Stecu Stecu</p>
-                        <p class="font-inter text-[14px] font-normal text-[#6e7971]">Faris Adam</p>
-                    </div>
-                </div>
-                <div
-                    class="min-w-[180px] bg-[#D0E4F5] rounded-md overflow-hidden shadow-sm hover:shadow-md transition duration-200">
-                    <div class="h-40 bg-blue-200 flex items-center justify-center">
-                        <img src="img/playlist.png" alt="playlist" class="w-20 h-20" />
-                    </div>
-                    <div class="p-3 bg-[#F1F8FC]">
-                        <p class="font-inter text-[16px] font-medium text-[#181B19]">Stecu Stecu</p>
-                        <p class="font-inter text-[14px] font-normal text-[#6e7971]">Faris Adam</p>
-                    </div>
-                </div>
+                </a>
             </div>
         </section>
-        
+
 
         <!-- Artis -->
         <section class="mt-10">
             <a href="{{ route('user.home') }}">
-                <h1 class="mb-4 font-roboto text-3xl font-semibold text-primary">Artis</h1>
+                <h1 class="mb-4 text-3xl font-semibold font-roboto text-primary">Artis</h1>
             </a>
             <div class="flex pb-2 space-x-6 overflow-x-auto scrollbar-hide">
                 {{-- Cek artis kosong --}}
                 @if (!empty($artists))
-                    {{-- Loop API artis --}}
-                    @foreach ($artists as $artist)
-                        {{-- Tambahkan tag <a> yang mengarah ke rute 'artists.show' --}}
-                        <a href="{{ route('artis', ['id' => $artist['id']]) }}"
-                            class="flex-shrink-0 flex flex-col items-center w-28">
-                            {{-- Data img --}}
-                            <img src="{{ $artist['image_url'] ?? 'https://placehold.co/112x112/EFEFEF/181B19?text=Artis' }}"
-                                alt="{{ $artist['name'] ?? 'Artist Name' }}"
-                                class="object-cover w-28 h-28 rounded-full border-2 border-transparent hover:border-primary hover:shadow-lg transition duration-200"
-                                onerror="this.onerror=null;this.src='https://placehold.co/112x112/EFEFEF/181B19?text=Gagal+Muat';" />
-                            {{-- Display nama artis --}}
-                            <p
-                                class="mt-2 font-inter text-[16px] font-medium text-[#181B19] text-center w-28 break-words leading-tight line-clamp-2">
-                                {{ $artist['name'] ?? 'Nama Artis' }}
-                            </p>
-                        </a>
+                {{-- Loop API artis --}}
+                @foreach ($artists as $artist)
+                {{-- Tambahkan tag <a> yang mengarah ke rute 'artists.show' --}}
+                    <a href="{{ route('artis', ['id' => $artist['id']]) }}"
+                        class="flex flex-col items-center flex-shrink-0 w-28">
+                        {{-- Data img --}}
+                        <img src="{{ $artist['image_url'] ?? 'https://placehold.co/112x112/EFEFEF/181B19?text=Artis' }}"
+                            alt="{{ $artist['name'] ?? 'Artist Name' }}"
+                            class="object-cover transition duration-200 border-2 border-transparent rounded-full w-28 h-28 hover:border-primary hover:shadow-lg"
+                            onerror="this.onerror=null;this.src='https://placehold.co/112x112/EFEFEF/181B19?text=Gagal+Muat';" />
+                        {{-- Display nama artis --}}
+                        <p
+                            class="mt-2 font-inter text-[16px] font-medium text-[#181B19] text-center w-28 break-words leading-tight line-clamp-2">
+                            {{ $artist['name'] ?? 'Nama Artis' }}
+                        </p>
+                    </a>
                     @endforeach
-                @else
+                    @else
                     {{-- jika tidak ditemukam --}}
-                    <p class="font-inter text-gray-500">Tidak ada artis yang ditemukan.</p>
-                @endif
+                    <p class="text-gray-500 font-inter">Tidak ada artis yang ditemukan.</p>
+                    @endif
             </div>
         </section>
 
@@ -329,75 +373,70 @@
             </div>
 
             @foreach ($songs as $index => $song)
-                <div class="flex items-center bg-[#F1F8FC] rounded-md px-4 py-1 mb-3">
-                    <img class="w-12 h-12 rounded-md object-cover"
-                        src="{{ $song['artist_image'] ?? 'https://placehold.co/48x48' }}" alt="Cover" />
+            <div class="flex items-center bg-[#F1F8FC] rounded-md px-4 py-1 mb-3">
+                <img class="object-cover w-12 h-12 rounded-md"
+                    src="{{ $song['artist_image'] ?? 'https://placehold.co/48x48' }}" alt="Cover" />
 
-                    <div class="ml-3 flex-1 min-w-0 flex items-center">
-                        <div class="min-w-0 max-w-[180px] mr-20">
-                            <p class="font-inter text-[16px] font-semibold text-neu900 truncate">
-                                {{ $song['song_name'] ?? 'Judul Lagu' }}
-                            </p>
-                            <p class="font-inter text-[16px] font-medium text-neu900 truncate">
-                                {{ $song['artist_name'] ?? 'Artis' }}
-                            </p>
+                <div class="flex items-center flex-1 min-w-0 ml-3">
+                    <div class="min-w-0 max-w-[180px] mr-20">
+                        <p class="font-inter text-[16px] font-semibold text-neu900 truncate">
+                            {{ $song['song_name'] ?? 'Judul Lagu' }}
+                        </p>
+                        <p class="font-inter text-[16px] font-medium text-neu900 truncate">
+                            {{ $song['artist_name'] ?? 'Artis' }}
+                        </p>
 
-                        </div>
+                    </div>
 
-                        <div class="flex items-center gap-1 bg-[#F1F8FC] rounded-md px-4 py-3 max-w-[600px] w-full">
-                            <!-- Tombol Play/Pause -->
-                            <div class="flex items-center gap-2">
-                                <button id="playPause"
-                                    class="relative w-8 h-8 bg-primary rounded-full text-white flex items-center justify-center">
-                                    <!-- Ikon Play -->
-                                    <svg class="play-icon absolute inset-0 m-auto w-4 h-4" fill="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path d="M8 5v14l11-7z" />
-                                    </svg>
-                                    <!-- Ikon Pause -->
-                                    <svg class="pause-icon absolute inset-0 m-auto w-10 h-10 hidden"
-                                        fill="currentColor" viewBox="0 0 32 24">
-                                        <path d="M10 9h2v6h-2zM14 9h2v6h-2z" />
-                                    </svg>
-                                </button>
-                                <span id="current"
-                                    class="text-sm text-gray-600 min-w-[42px] text-center">0:00</span>
-                            </div>
-
-                            <!-- Visualisasi -->
-                            <div id="wave" class="flex-1 h-[24px] max-w-[350px] overflow-hidden rounded"></div>
-
-                            <!-- Durasi -->
-                            <span id="duration" class="text-sm text-gray-600 min-w-[42px] text-center">0:00</span>
-                        </div>
-                        <div class="flex items-center max-w-[150px] w-full">
-                            <p class="font-inter text-[14px] font-medium text-[#3E4451] truncate">
-                                {{ $song['mood'] ?? 'mood' }}
-                            </p>
-                        </div>
-                        <div class="flex items-center gap-2 ml-auto">
-                            <!-- Tombol Add / Open Modal -->
-                            <button
-                                @click="
-                                if ($store.modalStore.playlists.length === 0) {
-                                    $store.modalStore.openCreateModal = true;
-                                } else {$store.modalStore.open = true;}"
-                                class="w-4 h-4 text-[#adb5af] hover:text-primary" title="Tambah ke playlist">
-                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-                                </svg>
-                            </button>
-                            <button @click="liked = !liked" :class="liked ? 'text-[#f83b3e]' : 'text-[#adb5af]'"
-                                class="w-5 h-5 hover:text-[#f83b3e]" title="Favorite">
-                                <svg :fill="liked ? '#f83b3e' : 'none'" stroke="currentColor" stroke-width="2"
+                    <div class="flex items-center gap-1 bg-[#F1F8FC] rounded-md px-4 py-3 max-w-[600px] w-full">
+                        <!-- Tombol Play/Pause -->
+                        <div class="flex items-center gap-2">
+                            <button id="playPause"
+                                class="relative flex items-center justify-center w-8 h-8 text-white rounded-full bg-primary">
+                                <!-- Ikon Play -->
+                                <svg class="absolute inset-0 w-4 h-4 m-auto play-icon" fill="currentColor"
                                     viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                    <path d="M8 5v14l11-7z" />
+                                </svg>
+                                <!-- Ikon Pause -->
+                                <svg class="absolute inset-0 hidden w-10 h-10 m-auto pause-icon" fill="currentColor"
+                                    viewBox="0 0 32 24">
+                                    <path d="M10 9h2v6h-2zM14 9h2v6h-2z" />
                                 </svg>
                             </button>
+                            <span id="current" class="text-sm text-gray-600 min-w-[42px] text-center">0:00</span>
                         </div>
+
+                        <!-- Visualisasi -->
+                        <div id="wave" class="flex-1 h-[24px] max-w-[350px] overflow-hidden rounded"></div>
+
+                        <!-- Durasi -->
+                        <span id="duration" class="text-sm text-gray-600 min-w-[42px] text-center">0:00</span>
+                    </div>
+                    <div class="flex items-center max-w-[150px] w-full">
+                        <p class="font-inter text-[14px] font-medium text-[#3E4451] truncate">
+                            {{ $song['mood'] ?? 'mood' }}
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-2 ml-auto">
+                        <!-- Tombol Add / Open Modal -->
+                        <button @click="$store.modalStore.openModal(@js($song))"
+                            class="w-4 h-4 text-[#adb5af] hover:text-primary" title="Tambah ke playlist">
+                            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                            </svg>
+                        </button>
+                        <button @click="liked = !liked" :class="liked ? 'text-[#f83b3e]' : 'text-[#adb5af]'"
+                            class="w-5 h-5 hover:text-[#f83b3e]" title="Favorite">
+                            <svg :fill="liked ? '#f83b3e' : 'none'" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                        </button>
                     </div>
                 </div>
+            </div>
             @endforeach
         </section>
     </div>
@@ -480,32 +519,116 @@
             }
         });
 
+        // Dalam file JavaScript Anda (misal: app.js
+
         document.addEventListener('alpine:init', () => {
             Alpine.store('modalStore', {
+                // State awal
                 open: false,
                 openCreateModal: false,
                 searchQuery: '',
-                playlists: ['Calm', 'Focus'], // data playlist
-                selected: [],
-                toggleSelected(playlist) {
-                    if (this.selected.includes(playlist)) {
-                        this.selected = this.selected.filter(i => i !== playlist);
-                    } else {
-                        this.selected.push(playlist);
+                playlists: [],
+                selectedPlaylistId: null, // Simpan ID saja untuk lebih sederhana
+                currentSong: null,
+
+                // Inisialisasi
+                init() {
+                    this.fetchPlaylists();
+                },
+
+                // Fetch playlists dari API
+                async fetchPlaylists() {
+                    try {
+                        const response = await fetch('/playlists');
+                        if (response.ok) {
+                            this.playlists = await response.json();
+                        } else {
+                            console.error('Failed to fetch playlists');
+                            this.playlists = [];
+                        }
+                    } catch (error) {
+                        console.error('Error fetching playlists:', error);
+                        this.playlists = [];
                     }
                 },
-                saveSelection() {
-                    console.log('Selected playlists:', this.selected);
-                    this.open = false;
-                },
+
+                // Filter playlists berdasarkan pencarian
                 get filteredPlaylists() {
-                    return this.playlists.filter(p =>
-                        p.toLowerCase().includes(this.searchQuery.toLowerCase())
+                    if (!this.playlists) return [];
+                    return this.playlists.filter(playlist =>
+                        playlist.name.toLowerCase().includes(this.searchQuery.toLowerCase())
                     );
                 },
-                //Fungsi cek playlist kosong
-                isPlaylistEmpty() {
-                    return this.playlists.length === 0;
+
+                // Pilih playlist
+                selectPlaylist(playlistId) {
+                    this.selectedPlaylistId = playlistId;
+                },
+
+                // Cek apakah playlist terpilih
+                isSelected(playlistId) {
+                    return this.selectedPlaylistId === playlistId;
+                },
+
+                // Simpan seleksi ke API
+                async saveSelection() {
+                    // Validasi
+                    if (!this.selectedPlaylistId || !this.currentSong?.id) {
+                        console.error('Validation failed:', {
+                            selectedPlaylistId: this.selectedPlaylistId,
+                            currentSong: this.currentSong
+                        });
+                        alert('Silakan pilih playlist dan pastikan lagu terpilih');
+                        return;
+                    }
+
+                    try {
+                        const response = await fetch(`/playlists/${this.selectedPlaylistId}/add-song`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                            },
+                            body: JSON.stringify({
+                                song_id: this.currentSong.id
+                            })
+                        });
+
+                        const data = await response.json();
+
+                        if (data.success) {
+                            alert('Lagu berhasil ditambahkan ke playlist!');
+                            this.resetModal();
+                        } else {
+                            alert(data.message || 'Gagal menambahkan lagu ke playlist');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('Terjadi kesalahan saat menambahkan lagu ke playlist');
+                    }
+                },
+
+                // Buka modal dengan lagu yang dipilih
+                openModal(song) {
+                    if (!song?.id) {
+                        console.error('Invalid song data:', song);
+                        return;
+                    }
+
+                    this.currentSong = song;
+
+                    if (this.playlists.length === 0) {
+                        this.openCreateModal = true;
+                    } else {
+                        this.open = true;
+                    }
+                },
+
+                // Reset state modal
+                resetModal() {
+                    this.open = false;
+                    this.selectedPlaylistId = null;
+                    this.searchQuery = '';
                 }
             });
         });

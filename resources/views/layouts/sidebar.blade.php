@@ -3,28 +3,26 @@
     x-data>
 
     <!-- Toast Notification -->
-    @if (session('success'))
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                showToast("{{ session('success') }}", 'success');
-            });
-        </script>
-    @elseif(session('error'))
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                showToast("{{ session('error') }}", 'error');
-            });
-        </script>
+    {{-- @if(session('success'))
+    <div class="p-4 mb-4 text-green-700 bg-green-100 rounded">
+        {{ session('success') }}
+    </div>
     @endif
 
-    <div class="flex flex-col h-full pt-10 p-4 space-y-3 overflow-y-auto font-inter font-medium text-sm">
+    @if(session('error'))
+    <div class="p-4 mb-4 text-red-700 bg-red-100 rounded">
+        {{ session('error') }}
+    </div>
+    @endif --}}
+    <div class="flex flex-col h-full p-4 pt-10 space-y-3 overflow-y-auto text-sm font-medium font-inter">
         <div x-cloak x-show="$store.modalStore.openCreateModal"
             class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
             <form method="POST" action="{{ route('playlist.store') }}">
-                <div class="bg-[#f1f8fc] border-2 border-primary rounded-md shadow-lg p-10 relative w-[600px] h-[320px]">
+                <div
+                    class="bg-[#f1f8fc] border-2 border-primary rounded-md shadow-lg p-10 relative w-[600px] h-[320px]">
                     @csrf
                     <button @click="$store.modalStore.openCreateModal = false"
-                        class="absolute top-2 right-3 text-neu900 hover:text-neu900 text-xl bg-gray-200 rounded-full w-6 h-6 flex items-center justify-center hover:bg-gray-300">
+                        class="absolute flex items-center justify-center w-6 h-6 text-xl bg-gray-200 rounded-full top-2 right-3 text-neu900 hover:text-neu900 hover:bg-gray-300">
                         &times;
                     </button>
                     <h2 class="text-[18px] font-medium text-[#8F9992] mb-4">Tambah Playlist</h2>
@@ -33,11 +31,18 @@
                             <img src="img/playlist.png" alt="playlist" class="w-[84px] h-[84px]" />
                         </div>
                         <div class="flex flex-col flex-1 gap-3">
-                            <input name="name" type="text" placeholder="Nama playlist"
+                            <input name="name" type="text" placeholder="Nama playlist" value="{{ old('name') }}"
                                 class="p-2 rounded bg-[#EBEDEC] placeholder:text-[#ADB5AF] text-sm focus:outline-none focus:ring-2 focus:ring-primary transition"
                                 required />
+                            @error('name')
+                            <span class="text-xs text-red-500">{{ $message }}</span>
+                            @enderror
+
                             <textarea name="description" placeholder="Tambahkan deskripsi (opsional)"
-                                class="p-2 rounded bg-[#EBEDEC] placeholder:text-[#ADB5AF] text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none h-[100px] transition"></textarea>
+                                class="p-2 rounded bg-[#EBEDEC] placeholder:text-[#ADB5AF] text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none h-[100px] transition">{{ old('description') }}</textarea>
+                            @error('description')
+                            <span class="text-xs text-red-500">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                     <div class="flex justify-end mt-2">
@@ -49,9 +54,8 @@
         </div>
     </div>
     <!-- Tombol Input Artis -->
-    <a href="{{ route('user.inputartis') }}"
-        class="flex items-center h-[36px] px-4 rounded-md 
-                {{ request()->routeIs('user.inputartis') ? 'bg-[#b4d1ed] shadow-md' : 'bg-[#95B7E4]' }} 
+    <a href="{{ route('user.inputartis') }}" class="flex items-center h-[36px] px-4 rounded-md
+                {{ request()->routeIs('user.inputartis') ? 'bg-[#b4d1ed] shadow-md' : 'bg-[#95B7E4]' }}
                 text-white  hover:bg-[#b4d1ed] transition-colors duration-200">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path
@@ -62,9 +66,8 @@
     </a>
 
     <!-- Tombol Input Lagu -->
-    <a href="{{ route('user.inputlagu') }}"
-        class="flex items-center h-[36px] px-4 rounded-md 
-        {{ request()->routeIs('user.inputlagu') ? 'bg-[#b4d1ed] shadow-md' : 'bg-[#95B7E4]' }} 
+    <a href="{{ route('user.inputlagu') }}" class="flex items-center h-[36px] px-4 rounded-md
+        {{ request()->routeIs('user.inputlagu') ? 'bg-[#b4d1ed] shadow-md' : 'bg-[#95B7E4]' }}
         text-white hover:bg-[#b4d1ed] transition-colors duration-200">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
             <mask id="mask0_923_5608" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24"
@@ -84,11 +87,10 @@
 
     <!-- Musik yang disukai -->
     <a href="{{ route('user.favorite') }}">
-        <div
-            class="flex items-center h-[50px] px-4 rounded-md bg-[#95B7E4] text-white
-            {{ request()->routeIs('user.favorite') ? 'bg-[#b4d1ed] shadow-md' : 'bg-[#95B7E4]' }} 
+        <div class="flex items-center h-[50px] px-4 rounded-md bg-[#95B7E4] text-white
+            {{ request()->routeIs('user.favorite') ? 'bg-[#b4d1ed] shadow-md' : 'bg-[#95B7E4]' }}
                 text-white hover:bg-[#b4d1ed] transition-colors duration-200">
-            <svg class="w-5 h-5 text-white mr-3" fill="currentColor" viewBox="0 0 20 20">
+            <svg class="w-5 h-5 mr-3 text-white" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd"
                     d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
                     clip-rule="evenodd"></path>
@@ -101,7 +103,7 @@
     </a>
 
     <!-- Playlist Section -->
-    <h2 class="text-white font-medium mb-3">Playlist</h2>
+    <h2 class="mb-3 font-medium text-white">Playlist</h2>
     <x-secondary-button @click="$store.modalStore.openCreateModal = true"
         class="flex items-center justify-center gap-2 w-full h-[40px] text-md py-2 mt-2">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -119,22 +121,21 @@
 
     <div id="playlistContainer" class="space-y-3">
         @foreach ($playlists ?? [] as $playlist)
-            <a href="{{ route('user.playlist', ['id' => $playlist['id']]) }}"
-                class="flex items-center h-[50px] px-4 rounded-md
+        <a href="{{ route('user.playlist', ['id' => $playlist['id']]) }}" class="flex items-center h-[50px] px-4 rounded-md
                    {{ ($selectedId ?? '') == $playlist['id'] ? 'bg-[#b4d1ed] shadow-md' : 'bg-[#95B7E4]' }}
                    text-white hover:bg-[#b4d1ed] transition-colors duration-200">
-                <div class="w-6 h-6 bg-white/20 rounded-md flex items-center justify-center mr-3">
-                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path
-                            d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v9.114A4.369 4.369 0 005 14c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V7.82l8-1.6v5.894A4.369 4.369 0 0015 12c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V3z">
-                        </path>
-                    </svg>
-                </div>
-                <div>
-                    <div class="font-medium">{{ $playlist['name'] }}</div>
-                    <div class="text-xs opacity-80">{{ $playlist['song_count'] }} lagu</div>
-                </div>
-            </a>
+            <div class="flex items-center justify-center w-6 h-6 mr-3 rounded-md bg-white/20">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                        d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v9.114A4.369 4.369 0 005 14c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V7.82l8-1.6v5.894A4.369 4.369 0 0015 12c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V3z">
+                    </path>
+                </svg>
+            </div>
+            <div>
+                <div class="font-medium">{{ $playlist['name'] }}</div>
+                <div class="text-xs opacity-80">{{ $playlist['song_count'] }} lagu</div>
+            </div>
+        </a>
         @endforeach
     </div>
 
@@ -153,7 +154,7 @@
                 'flex items-center h-[50px] px-4 rounded-md bg-[#95B7E4] text-white hover:bg-[#b4d1ed] transition-colors duration-200 cursor-pointer';
             playlistElement.innerHTML = `
                 <div class="flex items-center">
-                    <div class="w-6 h-6 bg-white/20 rounded-md flex items-center justify-center mr-3">
+                    <div class="flex items-center justify-center w-6 h-6 mr-3 rounded-md bg-white/20">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v9.114A4.369 4.369 0 005 14c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V7.82l8-1.6v5.894A4.369 4.369 0 0015 12c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V3z"></path>
                         </svg>
