@@ -51,7 +51,7 @@ class AuthenticatedSessionController extends Controller
             // Cek apakah berhasil
             if ($response->successful()) {
                 $data = $response->json();
-                // Ambil token dan username dari response
+                // Ambil token dan username 
                 $token = $data['token'] ?? null;
                 $user  = [
                     'username' => $data['username'] ?? null,

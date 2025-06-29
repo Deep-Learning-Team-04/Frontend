@@ -61,7 +61,7 @@
             </div>
         </div>
 
-        {{-- Tombol Masuk --}}
+        {{-- Button Masuk --}}
         <div class="flex justify-center">
             <x-primary-button class="w-full text-lg py-2 mt-10">
                 Masuk

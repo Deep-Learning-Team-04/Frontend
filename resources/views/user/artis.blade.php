@@ -7,13 +7,14 @@
     </style>
 
     {{-- Kontainer utama --}}
-     <div class="w-full max-w-7xl px-6 mx-auto" x-data="{
+    <div class="w-full max-w-7xl px-6 mx-auto" x-data="{
         result: null,
         liked: false,
         open: false,
         openModal: false,
         selected: [],
-        playlists: ['Calm', 'Focus']}">
+        playlists: ['Calm', 'Focus']
+    }">
         <div class="w-full max-w-7xl px-6 mx-auto">
 
             <!-- Modal playlist tersimpan -->
@@ -102,12 +103,59 @@
         <div class="flex gap-2">
             <!-- sisi kiri -->
             <div class="flex flex-col items-center w-1/3">
-                <div class="bg-[#D0E4F5] w-60 h-60 flex items-center justify-center rounded">
-                    <img src="img/playlist.png" alt="playlist" class="w-20 h-20" />
+                <div class="relative bg-gray-200 w-60 h-60 flex items-center justify-center rounded-lg shadow-md">
+                    {{-- Gambar Artis --}}
+                    <img src="{{ $artist['image_url'] ?? 'https://placehold.co/240x240/D0E4F5/181B19?text=Artis' }}"
+                        alt="{{ $artist['name'] }}" class="w-full h-full object-cover rounded-lg"
+                        onerror="this.onerror=null;this.src='https://placehold.co/240x240/D0E4F5/181B19?text=Gagal+Muat';" />
+                    {{-- Tombol Like --}}
+                    {{--  <button @click="liked = !liked" :class="liked ? 'text-[#f83b3e]' : 'text-white'"
+                        class="absolute bottom-3 right-3 w-8 h-8 hover:text-[#f83b3e] transition-colors"
+                        title="Favorite">
+                        <svg fill="currentColor" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                    </button>  --}}
+                    <button @click="toggleFavorite" :class="isFavorite ? 'text-[#f83b3e]' : 'text-white'"
+                        class="absolute bottom-3 right-3 w-8 h-8 hover:text-[#f83b3e] transition-colors"
+                        title="Favorite" x-data="{
+                            isFavorite: {{ $isFavorite ? 'true' : 'false' }},
+                            artistId: '{{ $artistId }}',
+                            toggleFavorite() {
+                                fetch(`/artists/${this.artistId}/toggle-favorite`, {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                        },
+                                        body: JSON.stringify({})
+                                    })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.success) {
+                                            this.isFavorite = data.is_favorite;
+                                            // Optional: Show notification
+                                            alert(data.message);
+                                        } else {
+                                            console.error('Error:', data.error);
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Error:', error);
+                                    });
+                            }
+                        }">
+                        <svg fill="currentColor" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                    </button>
                 </div>
-                <h2 class="font-roboto text-[24px] font-semibold text-neu900">Nama Playlist</h2>
-                <p class="font-inter text-[16px] font-medium text-[#adb5af] mb-8">Deskripsi Playlist</p>
-                <p class="font-inter text-[14px] font-medium text-primary">10 lagu | 35 Menit</p>
+                <h2 class="font-roboto text-[24px] font-semibold text-neu900">{{ $artist['name'] }}</h2>
+                <p class="font-inter text-sm font-medium text-primary mt-2">
+                    {{ count($artist['songs']) }} lagu
+                </p>
                 <button
                     class="mt-4 playPauseBtn relative w-16 h-16 bg-primary rounded-full text-white flex items-center justify-center">
                     <!-- Ikon Play -->
@@ -123,7 +171,7 @@
             </div>
 
             <!-- sisi kanan -->
-            <div class="flex-1">
+            {{--  <div class="flex-1">
                 <div class="flex items-center px-20 py-4">
                     <div class="flex-1 font-inter text-[14px] font-medium text-neu900">Judul</div>
                     <div class="flex-[0.2] text-center font-inter text-[14px] font-medium text-neu900">Duration</div>
@@ -150,12 +198,13 @@
                                         <path d="M8 5v14l11-7z" />
                                     </svg>
                                     <!-- Ikon Pause -->
-                                    <svg class="pause-icon absolute inset-0 m-auto w-10 h-10 hidden" fill="currentColor"
-                                        viewBox="0 0 32 24">
+                                    <svg class="pause-icon absolute inset-0 m-auto w-10 h-10 hidden"
+                                        fill="currentColor" viewBox="0 0 32 24">
                                         <path d="M10 9h2v6h-2zM14 9h2v6h-2z" />
                                     </svg>
                                 </button>
-                                <span id="current" class="text-sm text-gray-600 min-w-[42px] text-center">0:00</span>
+                                <span id="current"
+                                    class="text-sm text-gray-600 min-w-[42px] text-center">0:00</span>
                             </div>
 
                             <!-- Visualisasi -->
@@ -194,12 +243,157 @@
 
                     </div>
                 </div>
+            </div>  --}}
+            <div class="flex-1">
+                <div class="flex items-center px-20 py-4">
+                    <div class="flex-1 font-inter text-[14px] font-medium text-neu900">Judul</div>
+                    <div class="flex-[0.2] text-center font-inter text-[14px] font-medium text-neu900">Duration</div>
+                    <div class="flex-[0.5] text-center font-inter text-[14px] font-medium text-neu900">Mood</div>
+                </div>
+
+                @if (empty($artist['songs']))
+                    <div class="text-center py-8 font-inter text-neu900">Tidak ada data lagu</div>
+                @else
+                    @foreach ($artist['songs'] as $song)
+                        <div class="flex items-center bg-[#F1F8FC] rounded-md px-4 py-1 mb-3">
+                            <img class="w-12 h-12 rounded-md object-cover" src="{{ $artist['image_url'] }}"
+                                alt="Foto lagu" />
+                            <div class="ml-3 flex-1 min-w-0 flex items-center">
+                                <div class="min-w-0 w-1/4 mr-6">
+                                    <p class="font-inter text-[16px] font-semibold text-neu900 truncate">
+                                        {{ $song['song_name'] }}</p>
+                                    <p class="font-inter text-[16px] font-medium text-neu900 truncate">
+                                        {{ $artist['name'] }}</p>
+                                </div>
+
+                                <div
+                                    class="flex items-center gap-1 bg-[#F1F8FC] rounded-md px-4 py-3 max-w-[600px] w-full">
+                                    <!-- Audio Player -->
+                                    <audio id="audio-{{ $song['id'] }}" src="{{ $song['file_url'] }}"></audio>
+
+                                    <!-- Play/Pause Button -->
+                                    <button onclick="togglePlay('{{ $song['id'] }}')"
+                                        class="playPauseBtn relative w-8 h-8 bg-primary rounded-full text-white flex items-center justify-center">
+                                        <svg id="play-icon-{{ $song['id'] }}"
+                                            class="absolute inset-0 m-auto w-4 h-4" fill="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path d="M8 5v14l11-7z" />
+                                        </svg>
+                                        <svg id="pause-icon-{{ $song['id'] }}"
+                                            class="absolute inset-0 m-auto w-4 h-4 hidden" fill="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                                        </svg>
+                                    </button>
+
+                                    <!-- Current Time -->
+                                    <span id="current-time-{{ $song['id'] }}"
+                                        class="text-sm text-gray-600 min-w-[42px] text-center">0:00</span>
+
+                                    <!-- Progress Bar -->
+                                    <input type="range" id="progress-{{ $song['id'] }}" value="0"
+                                        class="flex-1 h-1 max-w-[350px] bg-gray-300 rounded-lg appearance-none cursor-pointer">
+
+                                    <!-- Duration -->
+                                    <span id="duration-{{ $song['id'] }}"
+                                        class="text-sm text-gray-600 min-w-[42px] text-center">0:00</span>
+                                </div>
+
+                                <div class="flex items-center max-w-[150px] w-full">
+                                    <p class="font-inter text-[14px] font-medium text-[#3E4451] truncate">
+                                        {{ $song['mood'] }}</p>
+                                </div>
+                                <div class="flex items-center gap-2 ml-auto">
+                                    <!-- Tombol Add / Open Modal -->
+                                    <button
+                                        @click="
+                            if ($store.modalStore.playlists.length === 0) {
+                                $store.modalStore.openCreateModal = true;
+                            } else {$store.modalStore.open = true;}"
+                                        class="w-4 h-4 text-[#adb5af] hover:text-primary" title="Tambah ke playlist">
+                                        <svg fill="none" stroke="currentColor" stroke-width="2"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                                        </svg>
+                                    </button>
+                                    <button @click="liked = !liked"
+                                        :class="liked ? 'text-[#f83b3e]' : 'text-[#adb5af]'"
+                                        class="w-5 h-5 hover:text-[#f83b3e]" title="Favorite">
+                                        <svg :fill="liked ? '#f83b3e' : 'none'" stroke="currentColor" stroke-width="2"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+
+                    <script>
+                        // Fungsi untuk toggle play/pause
+                        function togglePlay(songId) {
+                            const audio = document.getElementById(`audio-${songId}`);
+                            const playIcon = document.getElementById(`play-icon-${songId}`);
+                            const pauseIcon = document.getElementById(`pause-icon-${songId}`);
+
+                            if (audio.paused) {
+                                audio.play();
+                                playIcon.classList.add('hidden');
+                                pauseIcon.classList.remove('hidden');
+                            } else {
+                                audio.pause();
+                                playIcon.classList.remove('hidden');
+                                pauseIcon.classList.add('hidden');
+                            }
+                        }
+
+                        // Update progress bar dan waktu
+                        document.querySelectorAll('audio').forEach(audio => {
+                            const songId = audio.id.split('-')[1];
+                            const progress = document.getElementById(`progress-${songId}`);
+                            const currentTime = document.getElementById(`current-time-${songId}`);
+                            const duration = document.getElementById(`duration-${songId}`);
+
+                            // Update duration ketika metadata loaded
+                            audio.addEventListener('loadedmetadata', () => {
+                                duration.textContent = formatTime(audio.duration);
+                            });
+
+                            // Update progress bar dan current time
+                            audio.addEventListener('timeupdate', () => {
+                                progress.value = (audio.currentTime / audio.duration) * 100;
+                                currentTime.textContent = formatTime(audio.currentTime);
+                            });
+
+                            // Seek functionality
+                            progress.addEventListener('input', () => {
+                                const seekTime = (progress.value / 100) * audio.duration;
+                                audio.currentTime = seekTime;
+                            });
+                        });
+
+                        // Format waktu (detik ke menit:detik)
+                        function formatTime(seconds) {
+                            const minutes = Math.floor(seconds / 60);
+                            const secs = Math.floor(seconds % 60);
+                            return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+                        }
+                    </script>
+                @endif
             </div>
         </div>
     </div>
 
-    <script src="https://unpkg.com/wavesurfer.js"></script>
-    <script>
+    <script src="https://unpkg.com/wavesurfer.js">
+        // Optional: Global Wavesurfer configuration
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('audioPlayer', () => ({
+                // Configuration can be added here if needed
+            }));
+        });
+
+        {{--  <script>
         document.addEventListener("DOMContentLoaded", () => {
             const wavesurfer = WaveSurfer.create({
                 container: '#wave', // container utama waveform
@@ -255,7 +449,7 @@
                 const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
                 return `${minutes}:${secs}`;
             }
-        });
+        });  --}}
         document.addEventListener('alpine:init', () => {
             Alpine.store('modalStore', {
                 open: false,

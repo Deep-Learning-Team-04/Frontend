@@ -13,7 +13,8 @@
         open: false,
         openModal: false,
         selected: [],
-        playlists: ['Calm', 'Focus']}">
+        playlists: ['Calm', 'Focus']
+    }">
         <div class="w-full max-w-7xl px-6 mx-auto">
 
             <!-- Modal playlist tersimpan -->
@@ -97,7 +98,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Konten Halaman  -->
         <div class="flex gap-2">
             <!-- sisi kiri -->
@@ -105,21 +105,14 @@
                 <div class="bg-[#D0E4F5] w-60 h-60 flex items-center justify-center rounded">
                     <img src="img/playlist.png" alt="playlist" class="w-20 h-20" />
                 </div>
-                <h2 class="font-roboto text-[24px] font-semibold text-neu900">Nama Playlist</h2>
-                <p class="font-inter text-[16px] font-medium text-[#adb5af] mb-8">Deskripsi Playlist</p>
-                <p class="font-inter text-[14px] font-medium text-primary">10 lagu | 35 Menit</p>
-                <button
-                    class="mt-4 playPauseBtn relative w-16 h-16 bg-primary rounded-full text-white flex items-center justify-center">
-                    <!-- Ikon Play -->
-                    <svg class="play-icon absolute inset-0 m-auto w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M8 5v14l11-7z" />
-                    </svg>
-                    <!-- Ikon Pause -->
-                    <svg class="pause-icon absolute inset-0 m-auto w-20 h-20 hidden" fill="currentColor"
-                        viewBox="0 0 33 24">
-                        <path d="M10 9h2v6h-2zM14 9h2v6h-2z" />
-                    </svg>
-                </button>
+                <h2 class="font-roboto text-[24px] font-semibold text-neu900">
+                    @if (!empty($criteria))
+                        Mood: {{ ucfirst($criteria['mood']) }},
+                        Favorite Artists: {{ implode(', ', $criteria['favorite_artists']) }},
+                        Favorite Genres:
+                        {{ !empty($criteria['favorite_genres']) ? implode(', ', $criteria['favorite_genres']) : 'None' }}
+                    @endif
+                </h2>
             </div>
 
             <!-- sisi kanan -->
@@ -130,71 +123,73 @@
                     <div class="flex-[0.5] text-center font-inter text-[14px] font-medium text-neu900">Mood</div>
                 </div>
 
-
-                <div class="flex items-center bg-[#F1F8FC] rounded-md px-4 py-1 mb-3">
-                    <img class="w-12 h-12 rounded-md object-cover" src="img/hero.png" alt="Foto lagu" />
-                    <div class="ml-3 flex-1 min-w-0 flex items-center">
-                        <div class="min-w-0 w-1/4 mr-6">
-                            <p class="font-inter text-[16px] font-semibold text-neu900 truncate">Komang</p>
-                            <p class="font-inter text-[16px] font-medium text-neu900 truncate">Raim Laode</p>
-                        </div>
-
-                        <div class="flex items-center gap-1 bg-[#F1F8FC] rounded-md px-4 py-3 max-w-[600px] w-full">
-                            <!-- Tombol Play/Pause -->
-                            <div class="flex items-center gap-2">
-                                <button
-                                    class="playPauseBtn relative w-8 h-8 bg-primary rounded-full text-white flex items-center justify-center">
-                                    <!-- Ikon Play -->
-                                    <svg class="play-icon absolute inset-0 m-auto w-4 h-4" fill="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path d="M8 5v14l11-7z" />
-                                    </svg>
-                                    <!-- Ikon Pause -->
-                                    <svg class="pause-icon absolute inset-0 m-auto w-10 h-10 hidden" fill="currentColor"
-                                        viewBox="0 0 32 24">
-                                        <path d="M10 9h2v6h-2zM14 9h2v6h-2z" />
-                                    </svg>
-                                </button>
-                                <span id="current" class="text-sm text-gray-600 min-w-[42px] text-center">0:00</span>
+                @foreach ($recommendedSongs as $song)
+                    <div class="flex items-center bg-[#F1F8FC] rounded-md px-4 py-1 mb-3">
+                        <img class="w-12 h-12 rounded-md object-cover" src="img/hero.png" alt="Foto lagu" />
+                        <div class="ml-3 flex-1 min-w-0 flex items-center">
+                            <div class="min-w-0 w-1/4 mr-6">
+                                <p class="font-inter text-[16px] font-semibold text-neu900 truncate">
+                                    {{ $song['song_name'] }}</p>
+                                <p class="font-inter text-[16px] font-medium text-neu900 truncate">
+                                    {{ $song['artist_id'] }}</p>
                             </div>
 
-                            <!-- Visualisasi -->
-                            <div id="wave" class="flex-1 h-[24px] max-w-[350px] overflow-hidden rounded"></div>
+                            <div class="flex items-center gap-1 bg-[#F1F8FC] rounded-md px-4 py-3 max-w-[600px] w-full">
+                                <!-- Tombol Play/Pause -->
+                                <div class="flex items-center gap-2">
+                                    <button
+                                        class="playPauseBtn relative w-8 h-8 bg-primary rounded-full text-white flex items-center justify-center">
+                                        <!-- Ikon Play -->
+                                        <svg class="play-icon absolute inset-0 m-auto w-4 h-4" fill="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path d="M8 5v14l11-7z" />
+                                        </svg>
+                                        <!-- Ikon Pause -->
+                                        <svg class="pause-icon absolute inset-0 m-auto w-10 h-10 hidden"
+                                            fill="currentColor" viewBox="0 0 32 24">
+                                            <path d="M10 9h2v6h-2zM14 9h2v6h-2z" />
+                                        </svg>
+                                    </button>
+                                    <span id="current"
+                                        class="text-sm text-gray-600 min-w-[42px] text-center">0:00</span>
+                                </div>
 
-                            <!-- Durasi -->
-                            <span id="duration" class="text-sm text-gray-600 min-w-[42px] text-center">0:00</span>
-                        </div>
+                                <!-- Visualisasi -->
+                                <div id="wave" class="flex-1 h-[24px] max-w-[350px] overflow-hidden rounded"></div>
 
-                        <div class="flex items-center max-w-[150px] w-full">
-                            <p class="font-inter text-[14px] font-medium text-[#3E4451] truncate">Bersemangat, Sedih,
-                                Senang
-                            </p>
-                        </div>
-                        <div class="flex items-center gap-2 ml-auto">
-                            <!-- Tombol Add / Open Modal -->
-                            <button
-                                @click="
-                                if ($store.modalStore.playlists.length === 0) {
-                                    $store.modalStore.openCreateModal = true;
-                                } else {$store.modalStore.open = true;}"
-                                class="w-4 h-4 text-[#adb5af] hover:text-primary" title="Tambah ke playlist">
-                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-                                </svg>
-                            </button>
-                            <button @click="liked = !liked" :class="liked ? 'text-[#f83b3e]' : 'text-[#adb5af]'"
-                                class="w-5 h-5 hover:text-[#f83b3e]" title="Favorite">
-                                <svg :fill="liked ? '#f83b3e' : 'none'" stroke="currentColor" stroke-width="2"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                </svg>
-                            </button>
-                        </div>
+                                <!-- Durasi -->
+                                <span id="duration" class="text-sm text-gray-600 min-w-[42px] text-center">0:00</span>
+                            </div>
 
+                            <div class="flex items-center max-w-[150px] w-full">
+                                <p class="font-inter text-[14px] font-medium text-[#3E4451] truncate">
+                                    {{ ucfirst($song['mood']) }}</p>
+                            </div>
+                            <div class="flex items-center gap-2 ml-auto">
+                                <!-- Tombol Add / Open Modal -->
+                                <button
+                                    @click="if ($store.modalStore.playlists.length === 0) {
+                    $store.modalStore.openCreateModal = true;
+                } else {$store.modalStore.open = true;}"
+                                    class="w-4 h-4 text-[#adb5af] hover:text-primary" title="Tambah ke playlist">
+                                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                                    </svg>
+                                </button>
+                                <button @click="liked = !liked" :class="liked ? 'text-[#f83b3e]' : 'text-[#adb5af]'"
+                                    class="w-5 h-5 hover:text-[#f83b3e]" title="Favorite">
+                                    <svg :fill="liked ? '#f83b3e' : 'none'" stroke="currentColor" stroke-width="2"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                @endforeach
             </div>
+
         </div>
     </div>
 
