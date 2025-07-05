@@ -20,10 +20,7 @@
         <div class="w-full px-6 mx-auto max-w-7xl">
             <!-- Modal Mood -->
             <div x-data="{
-                {{--  openMood: true,
-                loading: false,
-                result: null,  --}}
-                openMood: false,
+                openMood: true,
                     loading: false,
                     result: null,
                     checkMoodInterval() {

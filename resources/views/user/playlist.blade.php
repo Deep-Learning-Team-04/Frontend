@@ -54,7 +54,7 @@
                 return;
             }
 
-            const apiUrl = `https://57a4-2001-448a-5001-20d3-556c-7f5c-5957-8be4.ngrok-free.app/playlists/list`;
+            const apiUrl = `https://7921-103-143-22-10.ngrok-free.app/playlists/list`;
 
             try {
                 const response = await fetch(apiUrl, {

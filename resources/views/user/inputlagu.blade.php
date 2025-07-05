@@ -71,7 +71,7 @@
                         return;
                     }
 
-                    const response = await fetch('https://57a4-2001-448a-5001-20d3-556c-7f5c-5957-8be4.ngrok-free.app/artists/', {
+                    const response = await fetch('https://7921-103-143-22-10.ngrok-free.app/artists/', {
                         method: 'GET',
                         headers: {
                             'Accept': 'application/json',
@@ -122,7 +122,7 @@
                     const controller = new AbortController();
                     const timeoutId = setTimeout(() => controller.abort(), 60000); // 60 detik timeout
 
-                    const response = await fetch('https://57a4-2001-448a-5001-20d3-556c-7f5c-5957-8be4.ngrok-free.app/songs/upload', {
+                    const response = await fetch('https://7921-103-143-22-10.ngrok-free.app/songs/upload', {
                         method: 'POST',
                         headers: {
                             'Authorization': `Bearer ${bearerToken}`,

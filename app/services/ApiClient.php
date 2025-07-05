@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Http;
 
 class ApiClient
 {
-    protected string $baseUrl = 'https://57a4-2001-448a-5001-20d3-556c-7f5c-5957-8be4.ngrok-free.app/';
+    protected string $baseUrl = 'https://7921-103-143-22-10.ngrok-free.app/';
 
     public function post(string $endpoint, array $data)
     {
