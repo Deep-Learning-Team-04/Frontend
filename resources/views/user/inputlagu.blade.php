@@ -7,7 +7,7 @@
     </style>
 
     {{-- Kontainer utama --}}
-    <div class="w-full max-w-7xl px-6 mx-auto">
+    <div class="w-full px-6 mx-auto max-w-7xl">
         <div class="p-4 bg-[#F1F8FC] rounded-lg shadow-md border-t-8 border-[#7B9CD9]">
 
             <form id="uploadSongForm" enctype="multipart/form-data">
@@ -15,34 +15,34 @@
 
                 {{-- Upload File Audio --}}
                 <div class="mt-8">
-                    <label for="audio" class="block text-md font-medium text-neutral mb-2">File Audio</label>
+                    <label for="audio" class="block mb-2 font-medium text-md text-neutral">File Audio</label>
                     <input type="file" id="audio" name="file" class="block w-full text-sm shadow-sm" required accept=".mp3,.wav,.mpeg" />
                 </div>
 
                 {{-- Genre --}}
                 <div class="mt-4">
-                    <label for="genre" class="inline-block font-inter text-md font-medium text-neutral">Genre</label>
+                    <label for="genre" class="inline-block font-medium font-inter text-md text-neutral">Genre</label>
                     <x-text-input id="genre" class="block w-full pr-12" type="text" name="genre" placeholder="Tambahkan genre lagu" required />
                 </div>
 
                 {{-- Nama Lagu --}}
                 <div class="mt-4">
-                    <label for="nama_lagu" class="inline-block font-inter text-md font-medium text-neutral">Nama Lagu</label>
+                    <label for="nama_lagu" class="inline-block font-medium font-inter text-md text-neutral">Nama Lagu</label>
                     <x-text-input id="nama_lagu" class="block w-full pr-12" type="text" name="song_name" placeholder="Tambahkan nama lagu" required />
                 </div>
 
                 {{-- Dropdown Artis --}}
                 <div class="mt-4">
-                    <label for="artis" class="inline-block font-inter text-md font-medium text-neutral mb-2">Artis</label>
+                    <label for="artis" class="inline-block mb-2 font-medium font-inter text-md text-neutral">Artis</label>
                     <x-select-input id="artis" name="artist_id" required
                         class="block w-full text-md rounded-md shadow-sm border border-gray-300 text-neu900 placeholder:text-gray-400 focus:outline-none focus:border-[#7B9CD9] focus:ring-1 focus:ring-[#7B9CD9]">
                         <option value="" disabled selected>-- Pilih Artis --</option>
                     </x-select-input>
                 </div>
 
-                <div id="uploadStatus" class="mt-4 text-center font-medium"></div>
+                <div id="uploadStatus" class="mt-4 font-medium text-center"></div>
 
-                <div class="flex justify-center mt-8 pb-20">
+                <div class="flex justify-center pb-20 mt-8">
                     <x-primary-button type="submit" class="flex items-center justify-center gap-2 w-[240px] h-[40px] text-md py-2 mt-10">
                         <img src="{{ asset('img/save.png') }}" alt="Icon" style="max-width: 24px; max-height: 24px;" />
                         {{ __('Kirim') }}
@@ -71,7 +71,7 @@
                         return;
                     }
 
-                    const response = await fetch('https://7921-103-143-22-10.ngrok-free.app/artists/', {
+                    const response = await fetch('http://127.0.0.1:5000/artists/', {
                         method: 'GET',
                         headers: {
                             'Accept': 'application/json',
@@ -85,7 +85,7 @@
                     }
 
                     const data = await response.json();
-                    
+
                     // Pastikan data yang diterima adalah array
                     if (!Array.isArray(data)) {
                         throw new Error('Format data artis tidak valid');
@@ -117,12 +117,12 @@
                 try {
                     const formData = new FormData(form);
                     const bearerToken = "{{ session('token') }}";
-                    
+
                     // Tambahkan timeout controller
                     const controller = new AbortController();
-                    const timeoutId = setTimeout(() => controller.abort(), 60000); // 60 detik timeout
+                    // const timeoutId = setTimeout(() => controller.abort(), 60000); // 60 detik timeout
 
-                    const response = await fetch('https://7921-103-143-22-10.ngrok-free.app/songs/upload', {
+                    const response = await fetch('http://127.0.0.1:5000/songs/upload', {
                         method: 'POST',
                         headers: {
                             'Authorization': `Bearer ${bearerToken}`,
@@ -133,7 +133,7 @@
                         signal: controller.signal
                     });
 
-                    clearTimeout(timeoutId);
+                    // clearTimeout(timeoutId);
 
                     if (!response.ok) {
                         const errorData = await response.json();

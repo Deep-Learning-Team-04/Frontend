@@ -52,9 +52,9 @@ class UploadController extends Controller
         }
 
         // Kirim request ke API Flask dengan otentikasi
-        $response = Http::withToken($token) 
+        $response = Http::withToken($token)
             ->attach('file', file_get_contents($request->file('file')), $request->file('file')->getClientOriginalName())
-            ->post('https://7921-103-143-22-10.ngrok-free.app/songs/upload', [
+            ->post('http://127.0.0.1:5000/songs/upload', [
                 'song_name' => $request->input('song_name'),
                 'genre' => $request->input('genre'),
                 'artist_id' => $request->input('artist_id'),
@@ -103,13 +103,13 @@ class UploadController extends Controller
             $httpRequest->attach('image', file_get_contents($request->file('image')), $request->file('image')->getClientOriginalName());
         }
 
-        $response = $httpRequest->post('https://7921-103-143-22-10.ngrok-free.app/artists/upload', [
+        $response = $httpRequest->post('http://127.0.0.1:5000/artists/upload', [
             'name' => $request->input('name')
         ]);
-   
-        // mengecek apakah request ke API 
-        if ($response->successful()) { 
-             return response()->json([
+
+        // mengecek apakah request ke API
+        if ($response->successful()) {
+            return response()->json([
                 'status' => 'success',
                 'message' => $response->json('message') ?: 'Artis Berhasil Ditambahkan' // Ambil pesan dari API
             ]);

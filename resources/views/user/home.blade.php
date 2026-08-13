@@ -33,17 +33,17 @@
                         }
                     },
                     moodMap: {
-                        'senang': 'happy',
-                        'tenang': 'relax',
-                        'sedih': 'sad',
-                        'marah': 'tense'
+                        'senang': 'Happy',
+                        'tenang': 'Relax',
+                        'sedih': 'Sad',
+                        'marah': 'Tense'
                     },
                     async fetchMood(mood) {
                         this.loading = true;
-                        const apiMood = this.moodMap[mood] || 'happy';
+                        const apiMood = this.moodMap[mood] || 'Happy';
 
                         try {
-                            const response = await fetch('/save-mood', {
+                            const response = await fetch('/mood', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',
@@ -378,11 +378,11 @@
             @foreach ($songs as $index => $song)
                 <div class="flex items-center bg-[#F1F8FC] rounded-md px-6 py-3 mb-3">
                     {{-- Cover Image --}}
-                    <img class="w-12 h-12 rounded-md object-cover"
+                    <img class="object-cover w-12 h-12 rounded-md"
                         src="{{ $song['artist_image'] ?? 'https://placehold.co/48x48' }}" alt="Cover" />
 
                     {{-- Info & Player --}}
-                    <div class="ml-4 flex flex-1 items-center gap-4 min-w-0">
+                    <div class="flex items-center flex-1 min-w-0 gap-4 ml-4">
                         {{-- Judul + Artis --}}
                         <div class="w-[300px] min-w-0">
                             <p class="font-inter text-[16px] font-semibold text-neu900 truncate">
@@ -394,18 +394,18 @@
                         </div>
 
                         {{-- Audio Player Full Width --}}
-                        <div class="flex items-center gap-2 flex-1 min-w-0">
+                        <div class="flex items-center flex-1 min-w-0 gap-2">
                             <audio id="audio-{{ $song['id'] }}" src="{{ $song['file_url'] }}"></audio>
 
                             {{-- Tombol Play/Pause --}}
                             <button onclick="togglePlay('{{ $song['id'] }}')"
-                                class="relative w-8 h-8 bg-primary rounded-full text-white flex items-center justify-center flex-shrink-0">
-                                <svg id="play-icon-{{ $song['id'] }}" class="absolute inset-0 m-auto w-4 h-4"
+                                class="relative flex items-center justify-center flex-shrink-0 w-8 h-8 text-white rounded-full bg-primary">
+                                <svg id="play-icon-{{ $song['id'] }}" class="absolute inset-0 w-4 h-4 m-auto"
                                     fill="currentColor" viewBox="0 0 24 24">
                                     <path d="M8 5v14l11-7z" />
                                 </svg>
                                 <svg id="pause-icon-{{ $song['id'] }}"
-                                    class="absolute inset-0 m-auto w-4 h-4 hidden" fill="currentColor"
+                                    class="absolute inset-0 hidden w-4 h-4 m-auto" fill="currentColor"
                                     viewBox="0 0 24 24">
                                     <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
                                 </svg>
@@ -416,7 +416,7 @@
                                 class="text-xs text-gray-600 w-[40px] text-center flex-shrink-0">0:00</span>
 
                             <input type="range" id="progress-{{ $song['id'] }}" value="0"
-                                class="h-1 w-full bg-gray-300 rounded-lg appearance-none cursor-pointer">
+                                class="w-full h-1 bg-gray-300 rounded-lg appearance-none cursor-pointer">
 
                             <span id="duration-{{ $song['id'] }}"
                                 class="text-xs text-gray-600 w-[40px] text-center flex-shrink-0">0:00</span>
@@ -430,7 +430,7 @@
                         </div>
 
                         {{-- Tombol Aksi --}}
-                        <div class="flex items-center gap-2 ml-2 flex-shrink-0">
+                        <div class="flex items-center flex-shrink-0 gap-2 ml-2">
                             {{-- <button
                                 @click="
                         if ($store.modalStore.playlists.length === 0) {

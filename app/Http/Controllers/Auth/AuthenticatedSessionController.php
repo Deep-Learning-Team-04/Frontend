@@ -33,9 +33,8 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        // Validasi input
         $validator = Validator::make($request->all(), [
-            'email'    => ['required', 'email'],
+            'email' => ['required', 'email'],
             'password' => ['required', 'min:6'],
         ]);
 
@@ -46,33 +45,71 @@ class AuthenticatedSessionController extends Controller
         }
 
         try {
-            // Kirim request ke API eksternal
-            $response = $this->api->post('/auth/login', $validator->validated());
-            // Cek apakah berhasil
-            if ($response->successful()) {
-                $data = $response->json();
-                // Ambil token dan username 
-                $token = $data['token'] ?? null;
-                $user  = [
-                    'username' => $data['username'] ?? null,
-                    'email'    => $data['email'] ?? null,
-                ];
-                if ($token && $user['username']) {
-                    // Simpan ke session
-                    Session::put('token', $token);
-                    Session::put('user', $user);
-                    // Jika "ingat saya" dicentang
-                    if ($request->has('remember')) {
-                        Session::put('remember_me', true);
-                    }
-                    // Redirect ke home
-                    return redirect()->route('user.home')->with('success', 'login Berhasil!');
-                }
+            $response = $this->api->post(
+                '/auth/login',
+                $validator->validated()
+            );
+
+            if (!$response->successful()) {
+                return redirect()->back()
+                    ->withErrors([
+                        'login' => 'Email atau password salah!'
+                    ])
+                    ->withInput();
             }
+
+            $data = $response->json();
+
+            $token = $data['token'] ?? null;
+
+            $user = [
+                'username' => $data['username'] ?? null,
+                'email' => $data['email'] ?? null,
+            ];
+
+            if (!$token || !$user['username'] || !$user['email']) {
+                Log::error('Login response tidak lengkap', [
+                    'response' => $data,
+                ]);
+
+                return redirect()->back()
+                    ->withErrors([
+                        'login' => 'Data user dari API tidak lengkap.'
+                    ])
+                    ->withInput();
+            }
+
+            // Simpan token dan data user ke session
+            Session::put('token', $token);
+            Session::put('user', $user);
+
+            // Regenerate session setelah login
+            $request->session()->regenerate();
+
+            if ($request->boolean('remember')) {
+                Session::put('remember_me', true);
+            }
+
+            Log::info('LOGIN SESSION', [
+                'token' => $request->session()->get('token'),
+                'user' => $request->session()->get('user'),
+                'session_id' => $request->session()->getId(),
+            ]);
+
+            return redirect()
+                ->route('user.home')
+                ->with('success', 'Login berhasil!');
+
         } catch (\Exception $e) {
-            Log::error('Login error: ' . $e->getMessage());
+
+            Log::error('Login error', [
+                'message' => $e->getMessage(),
+            ]);
+
             return redirect()->back()
-                ->withErrors(['login' => 'Email atau password salah!' . $e->getMessage()])
+                ->withErrors([
+                    'login' => 'Terjadi kesalahan saat login.'
+                ])
                 ->withInput();
         }
     }

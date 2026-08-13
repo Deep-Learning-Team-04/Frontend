@@ -17,7 +17,7 @@ class RekomendasiLaguController extends Controller
 
     public function getRecommendations()
     {
-        $email = session('user')['username'] ?? null;
+        $email = session()->get('user.email');
 
         if (!$email) {
             return redirect()->back()->with('error', 'User not authenticated');

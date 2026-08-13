@@ -20,7 +20,12 @@ class ArtisController extends Controller
         $artist = null;
         $isFavorite = false;
         $favoriteArtists = [];
-        $userEmail = session('user')['username'] ?? null;
+        $userEmail = session()->get('user.email');
+        Log::info('DEBUG Fav artis', [
+            'email' => $userEmail,
+            'session_user' => session('user')
+        ]);
+
 
         try {
             $artistResponse = $this->api->get('artists/' . $id);
@@ -54,7 +59,7 @@ class ArtisController extends Controller
     }
     public function toggleFavorite(Request $request, $artistId)
     {
-        $userEmail = session('user')['username'] ?? null;
+        $userEmail = session()->get('user.email');
 
         if (!$userEmail) {
             return response()->json(['error' => 'User not authenticated'], 401);

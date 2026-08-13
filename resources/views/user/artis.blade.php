@@ -35,17 +35,17 @@
                         }
                     },
                     moodMap: {
-                        'senang': 'happy',
-                        'tenang': 'relax',
-                        'sedih': 'sad',
-                        'marah': 'tense'
+                        'senang': 'Happy',
+                        'tenang': 'Relax',
+                        'sedih': 'Sad',
+                        'marah': 'Tense'
                     },
                     async fetchMood(mood) {
                         this.loading = true;
-                        const apiMood = this.moodMap[mood] || 'happy';
+                        const apiMood = this.moodMap[mood] || 'Happy';
 
                         try {
-                            const response = await fetch('/save-mood', {
+                            const response = await fetch('/mood', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',

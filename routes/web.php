@@ -22,7 +22,7 @@ Route::get('/register', [RegisteredUserController::class, 'create'])->name('regi
 Route::post('/register', [RegisteredUserController::class, 'store'])->name('register.store');
 
 Route::get('/home', [HomeController::class, 'index'])->name('user.home');
-Route::post('/save-mood', [HomeController::class, 'saveMood'])->name('save.mood');
+Route::post('/mood', [HomeController::class, 'saveMood'])->name('save.mood');
 Route::post('/songs/play', [HomeController::class, 'play']);
 
 Route::post('/upload', [UploadController::class, 'store'])->name('upload.store');

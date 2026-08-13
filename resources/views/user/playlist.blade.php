@@ -1,24 +1,35 @@
 <x-app-layout>
     <style>
-        body { background-color: #F9FAFB; }
-        [x-cloak] { display: none !important; }
+        body {
+            background-color: #F9FAFB;
+        }
+
+        [x-cloak] {
+            display: none !important;
+        }
     </style>
 
     <div class="w-full max-w-7xl px-6 mx-auto" x-data="{ liked: false }">
         <div id="playlist-content" class="flex gap-2 opacity-0 transition-opacity duration-500">
             <!-- Sisi Kiri - Informasi Playlist -->
             <div class="flex flex-col items-center w-1/3">
-                <div id="playlist-image-container" class="relative bg-[#D0E4F5] w-60 h-60 flex items-center justify-center rounded-lg shadow-md">
-                    <img src="{{ asset('img/playlist.png') }}" alt="playlist" class="w-full h-full object-cover rounded-lg" />
+                <div id="playlist-image-container"
+                    class="relative bg-[#D0E4F5] w-60 h-60 flex items-center justify-center rounded-lg shadow-md">
+                    <img src="{{ asset('img/playlist.png') }}" alt="playlist"
+                        class="w-full h-full object-cover rounded-lg" />
                     <button @click="liked = !liked" :class="liked ? 'text-[#f83b3e]' : 'text-white'"
-                        class="absolute bottom-3 right-3 w-8 h-8 hover:text-[#f83b3e] transition-colors" title="Favorite">
+                        class="absolute bottom-3 right-3 w-8 h-8 hover:text-[#f83b3e] transition-colors"
+                        title="Favorite">
                         <svg fill="currentColor" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                         </svg>
                     </button>
                 </div>
-                <h2 id="playlist-name" class="font-roboto text-[24px] font-semibold text-neu900 mt-4 text-center">Memuat...</h2>
-                <p id="playlist-description" class="font-inter text-[16px] font-medium text-[#adb5af] mb-2 text-center"></p>
+                <h2 id="playlist-name" class="font-roboto text-[24px] font-semibold text-neu900 mt-4 text-center">
+                    Memuat...</h2>
+                <p id="playlist-description" class="font-inter text-[16px] font-medium text-[#adb5af] mb-2 text-center">
+                </p>
                 <p id="playlist-stats" class="font-inter text-[14px] font-medium text-primary"></p>
             </div>
 
@@ -39,7 +50,7 @@
     </div>
 
     <script>
-    document.addEventListener("DOMContentLoaded", () => {
+        document.addEventListener("DOMContentLoaded", () => {
         async function fetchPlaylistDetails() {
             const container = document.getElementById('playlist-content');
             const errorDiv = document.getElementById('playlist-error');
@@ -54,7 +65,7 @@
                 return;
             }
 
-            const apiUrl = `https://7921-103-143-22-10.ngrok-free.app/playlists/list`;
+            const apiUrl = `http://127.0.0.1:5000/playlists/list`;
 
             try {
                 const response = await fetch(apiUrl, {

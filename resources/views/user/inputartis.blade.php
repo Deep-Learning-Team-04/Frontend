@@ -27,7 +27,7 @@
                     <x-text-input id="artis" class="block w-full pr-12" type="text" name="name"
                         placeholder="Tambahkan nama artis" :disabled="false" required />
                 </div>
-                
+
                 <div id="uploadStatus" class="mt-4 text-center font-medium"></div>
 
                 <div class="flex justify-center mt-8 pb-20">
@@ -73,7 +73,7 @@
                 })
                 .then(data => {
                     if (data.status === 'success') {
-                        statusDiv.textContent = 'Sukses: Artis berhasil ditambahkan!'; 
+                        statusDiv.textContent = 'Sukses: Artis berhasil ditambahkan!';
                         statusDiv.style.color = 'green';
                         form.reset();
                     } else {

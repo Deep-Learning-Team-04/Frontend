@@ -72,11 +72,27 @@ class HomeController extends Controller
     public function saveMood(Request $request)
     {
         $request->validate([
-            'mood' => 'required|in:happy,relax,sad,tense'
+            'mood' => 'required|in:Happy,Relax,Sad,Tense'
         ]);
 
-        $email = session('user')['username'];
         $mood = $request->mood;
+
+        $username = $request->session()->get('user.username');
+        $email = $request->session()->get('user.email');
+
+
+        Log::info('DEBUG SAVE MOOD', [
+            'email' => $email,
+            'mood' => $mood,
+            'session_user' => session('user')
+        ]);
+
+        if (!$email) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User belum login atau email tidak ditemukan.'
+            ], 401);
+        }
 
         try {
             $response = $this->api->post("users/{$email}/mood", [
@@ -93,9 +109,11 @@ class HomeController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Gagal menyimpan mood'
-            ], 400);
+            ], $response->status());
+
         } catch (\Exception $e) {
             Log::error('Error saving mood: ' . $e->getMessage());
+
             return response()->json([
                 'success' => false,
                 'message' => 'Terjadi kesalahan server'
@@ -106,6 +124,17 @@ class HomeController extends Controller
     public function play(Request $request)
     {
         $songId = $request->input('song_id');
-        return response()->json(['message' => 'Lagu sedang diputar', 'song_id' => $songId]);
+
+        // ambil user dari session
+        $user = session('user');
+        $userId = $user['email'] ?? null;
+
+        // kirim ke Flask
+        $response = $this->api->post('/songs/play', [
+            'user_id' => $userId,
+            'song_id' => $songId,
+        ]);
+
+        return response()->json($response->json(), $response->status());
     }
 }
